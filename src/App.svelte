@@ -1,30 +1,52 @@
+<svelte:head>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</svelte:head>
+
 <script>
-	export let name;
-</script>
-
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
+	import Timer from './Timer.svelte'
+	
+	// incorporate selected endStrategy
+	const handleEnd = (e) => {
+		if (e.detail.isFinished === true) {
+			alert(e.detail.message);
 		}
 	}
+</script>
+
+<style>
+	:global(.container) {
+			height: 100%;
+			width: 75%;
+			margin: 5px 0;
+			display: flex;
+			justify-content: center;
+	}
+
+	:global(.time) {
+		font-family: 'Montserrat';
+		font-size: 3rem;
+		text-align: center;
+		padding: 0;
+		margin: 5px 2px;
+		min-width: 6.5rem;
+		font-weight: 400;
+	}
+
+	:global(span) {
+		font-size: 3rem;
+		font-family: 'Montserrat';
+	}
+
+	div {
+		height: 10rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+	}
 </style>
+
+<div>
+	<Timer on:end={handleEnd} />	
+</div>
