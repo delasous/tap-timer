@@ -85,4 +85,4 @@
 			disabled="{interval || !input || (countDown === input)}"
 		>Reset</button>
 	{/if}
-</div>
+</div>	

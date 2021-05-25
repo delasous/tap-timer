@@ -6,5 +6,9 @@
     "icons": {},
     "browser_action": {
         "default_popup": "index.html"
+    },
+    "background": {
+        "scripts": ["Timer.js"],
+        "persistent": true
     }
 }    
