@@ -2,10 +2,11 @@
 // bundle & inject into timer.html
 // update manifest
 // update rollup input/output
+import Timer from './Timer.svelte';
 
-const app = new App({
+const timer = new Timer({
 	target: document.body,
-	props: {} // declare whole app props here? or could you e.g pass endStrategy options here?
+	props: {}
 });
 
-export default app;
+export default timer;
