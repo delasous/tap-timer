@@ -59,7 +59,7 @@ export default [{
 				files: [
 					'global.css',
 					'index.html',
-					'timer.html',
+					'background.html',
 					'manifest.json'
 				]
 			})
@@ -69,14 +69,13 @@ export default [{
 		}
 	},
 	{
-		input: 'src/timer.js',
+		input: 'src/background.js',
 		output: {
 			sourcemap: true,
 			format: 'iife',
 			name: 'timer',
-			file: 'dist/timer.js'
+			file: 'dist/background.js'
 		},
-
 		plugins: [
 			svelte({
 				compilerOptions: {
@@ -92,7 +91,6 @@ export default [{
 			!production && serve(),
 			!production && livereload('dist'),
 			production && terser(),
-				
 		],
 		watch: {
 			clearScreen: false
