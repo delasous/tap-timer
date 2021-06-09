@@ -3,25 +3,26 @@
 
 	import Timer from './Timer';
 
-	// currently not used outside of 'connected'
 	let port;
 	let T;
 
-	function connected(p) {
+	const connected = (p) => {
 		port = p;
 			
-		T = Timer.getInstance(port);
+		T = Timer.getInstance();
 
-		T.notify();
+		T.messanger = port
+		T.notifyState();
 
-		port.onMessage.addListener(({ msg, input }) => {
+		port.onMessage.addListener(({ msg, input, interval }) => {
 			if (msg === 'start-timer') T.start(input);
-
-			if (msg === 'stop-timer') T.stop();
+			if (msg === 'stop-timer') T.stop(interval);
 			if (msg === 'reset-timer') T.reset();
 
 			return;
 		})
+
+		port.onDisconnect.addListener(() => T.messanger = undefined)
 	}
 
 	browser.runtime.onConnect.addListener(connected);

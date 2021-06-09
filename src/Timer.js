@@ -4,65 +4,50 @@ class Timer {
 	interval;
 	isTimerActive = false; 
 
-	port;
+	messanger;
 
-	constructor(port) {
-		this.port = port;
+	set messanger(messanger) {
+		this.messanger = messanger
 	}
 
-	// register the timer within a messanger obj?
-	// port/messanger should track state of whether messanger is available or not
-	notify() {
+	notifyState() {
+		// recreates state every pass 
 		const state = {
-			input: this.input,
 			countDown: this.countDown,
 			interval: this.interval,
 			isTimerActive: this.isTimerActive,
 		}
 
-		// not enough handle error "attemping to use disconnected port"
-		// needs to be own object, and potensh listen for 'disconnected event'
-		if (this.port) {
-			this.port.postMessage({ msg: 'timer-state', state })		
-		} 
-
-		return;
+		if (this.messanger) this.messanger.postMessage({ msg: 'timer-state', state })		
 	}
 	
-	stop() {
+	stop(interval) {
 		clearInterval(interval);
-		this.interval = null; 
+		this.interval = null;
+		this.notifyState() 
 	}
 	
-	// references to H, M, S ints of inputs needs to be cleared
-	// nice to just use .notify(), can you reset individual fields in view
 	reset() {
 		stop();
-		// H = M = S = 0; 
-
-		// also is resetting countDown to input necessary / do anything here?
-		// was important when in view
 		this.countDown = this.input;
 		this.isTimerActive = false;
+		this.notifyState()
 	}
 	
-	start(input) {
-	
-		console.log('starting', input)
-	
+	start(input) {	
 		this.input = input;
 		this.countDown = this.input;
 		this.isTimerActive = true;
 	
 		this.interval = setInterval(() => {
 			if (this.countDown === 0) {
-				// end();
+				// end(); // fires end strategy
 				stop();
 				return;
 			}
 
 			this.countDown -= 1;
-			this.notify()
+			this.notifyState()
 		}, 1000);
 	};
 }
@@ -70,16 +55,12 @@ class Timer {
 const TimerSingleton = (() => {
 	let instance;
 
-	const createTimer = (port) => {
-		return new Timer(port);
-	}
-
 	return {
-		getInstance: (port) => {
-			if (!instance) instance = createTimer(port)
+		getInstance: () => {
+			if (!instance) instance = new Timer();
 			return instance;
 		}
 	};
 })();
 
-export default TimerSingleton
+export default TimerSingleton;
