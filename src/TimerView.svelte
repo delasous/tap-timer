@@ -1,17 +1,17 @@
 <script>
-  import Editable from './Editable.svelte';
-  import EditTime from './EditTime.svelte';
-  import DisplayTime from './DisplayTime.svelte';
+	import Editable from './Editable.svelte';
+	import EditTime from './EditTime.svelte';
+	import DisplayTime from './DisplayTime.svelte';
 
-  export let countDown;
-  export let interval;
+	export let countDown;
+	export let interval;
 	export let isTimerActive;
 
-  export let start;  
-  export let stop;
-  export let reset;
+	export let start;  
+	export let stop;
+	export let reset;
 
-  let hours = '';
+	let hours = '';
 	let mins = '';
 	let secs = '';
 
@@ -21,8 +21,8 @@
 	$: input = hoursToSecs(hours) + minsToSecs(mins) + secs;
 
 	$: H = Math.floor((countDown % (60 * 60 * 24)) / (60 * 60));
-  $: M = Math.floor((countDown % (60 * 60)) / (60));
-  $: S = Math.floor(countDown % (60));
+	$: M = Math.floor((countDown % (60 * 60)) / (60));
+	$: S = Math.floor(countDown % (60));
 </script>
 
 <div class='app'>
@@ -52,6 +52,11 @@
 </div>
 
 <style>
+	:global(*) {
+		box-sizing: border-box;
+
+	}
+
 	:global(.container) {
 			height: 100%;
 			width: 75%;
