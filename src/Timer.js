@@ -3,10 +3,30 @@ class Timer {
 	countDown;
 	interval;
 	isTimerActive = false; 
+
 	port;
 
 	constructor(port) {
 		this.port = port;
+	}
+
+	// register the timer within a messanger obj?
+	// port/messanger should track state of whether messanger is available or not
+	notify() {
+		const state = {
+			input: this.input,
+			countDown: this.countDown,
+			interval: this.interval,
+			isTimerActive: this.isTimerActive,
+		}
+
+		// not enough handle error "attemping to use disconnected port"
+		// needs to be own object, and potensh listen for 'disconnected event'
+		if (this.port) {
+			this.port.postMessage({ msg: 'timer-state', state })		
+		} 
+
+		return;
 	}
 	
 	stop() {
@@ -14,20 +34,23 @@ class Timer {
 		this.interval = null; 
 	}
 	
-	// references to H, M, S ints of inputs which need to be cleared
-	// also is resetting countDown to input necessary?
+	// references to H, M, S ints of inputs needs to be cleared
+	// nice to just use .notify(), can you reset individual fields in view
 	reset() {
 		stop();
 		// H = M = S = 0; 
+
+		// also is resetting countDown to input necessary / do anything here?
+		// was important when in view
 		this.countDown = this.input;
 		this.isTimerActive = false;
 	}
 	
-	start(_input) {
+	start(input) {
 	
-		console.log('starting', _input)
+		console.log('starting', input)
 	
-		this.input = _input;
+		this.input = input;
 		this.countDown = this.input;
 		this.isTimerActive = true;
 	
@@ -37,14 +60,10 @@ class Timer {
 				stop();
 				return;
 			}
-			this.countDown -= 1;
 
-			// no port if popup is closed.
-			// this mixes raw timer logic with specific messaging - can you pass 'messanger' as arg of setInterval?
-			// import Timer class
-			// needs to pass entire state {} of Timer every time there is a change
-			this.port.postMessage({ countDown: this.countDown })
-		},1000);
+			this.countDown -= 1;
+			this.notify()
+		}, 1000);
 	};
 }
 

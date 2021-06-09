@@ -8,9 +8,7 @@
     export let start;  
     // export let stop;
     // export let reset;
-  
-    // rename this as there will be a Timer class file
-</script>
+  </script>
 <div class='app'>
     <p>{countDown}</p>
 	<button on:click={start(input)}>Start</button>

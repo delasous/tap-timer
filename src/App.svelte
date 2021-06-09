@@ -4,32 +4,39 @@
 
 	import Timer from './TimerView.svelte';
 
-	let _port;
-	let _countDown;
-	let _interval;
-	let _isTimerActive;
+	let input;
+	let countDown;
+	let interval;
+	let isTimerActive;
 
 	// pass as events to Timer?
-	let start = (input) => _port.postMessage({ msg: 'start-timer', input });
-	// let stop
-	// let reset
+	let start = (input) => port.postMessage({ msg: 'start-timer', input });
+	let stop = () => port.postMessage({ msg: 'stop-timer', input });
+	let reset = () => port.postMessage({ msg: 'reset-timer', input });
 
+	let port;
+	// have to check ports connected here too?
 	onMount(async () => {
-		_port = browser.runtime.connect({ name: 'background-timer-port' });
+		port = browser.runtime.connect({ name: 'background-timer-port' });
 
-		_port.onMessage.addListener(({ countDown, interval, isTimerActive }) => {
-			_interval = interval
-			_isTimerActive = isTimerActive;
-			_countDown = countDown;
+		port.onMessage.addListener(({ msg, state }) => {
+			if (msg === 'timer-state') {
+				input = state.input
+				countDown = state.countDown;
+				interval = state.interval
+				isTimerActive = state.isTimerActive;
+			}
+			return;
 		})
-	})
-
-	_port && _port.onMessage.addListener(({ countDown }) => {
-		_countDown = countDown;
 	})
 </script>
 
 <Timer 
+	{input}
+	{countDown}
+	{interval}
+	{isTimerActive}
 	{start}
-	countDown={_countDown}
+	{stop}
+	{reset}
 />

@@ -12,21 +12,13 @@
 			
 		T = Timer.getInstance(port);
 
-		let { 
-			countDown,
-			interval,
-			isTimerActive
-		} = T
-
-		// this is only initial state of timer
-		// if Timer changes, it needs to post message of updated variable state.
-		port.postMessage({ countDown, interval, isTimerActive });
+		T.notify();
 
 		port.onMessage.addListener(({ msg, input }) => {
 			if (msg === 'start-timer') T.start(input);
 
-			// if (msg === 'stop-timer') T.stop(input);
-			// if (msg === 'reset-timer') T.reset(input);
+			if (msg === 'stop-timer') T.stop();
+			if (msg === 'reset-timer') T.reset();
 
 			return;
 		})
