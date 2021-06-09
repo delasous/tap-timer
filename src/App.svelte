@@ -2,33 +2,34 @@
 	import browser from 'webextension-polyfill';
 	import { onMount } from 'svelte';
 
-	import Timer from './Timer.svelte';
+	import Timer from './TimerView.svelte';
 
 	let _port;
-	let _start;
 	let _countDown;
+	let _interval;
+	let _isTimerActive;
+
+	// pass as events to Timer?
+	let start = (input) => _port.postMessage({ msg: 'start-timer', input });
+	// let stop
+	// let reset
 
 	onMount(async () => {
 		_port = browser.runtime.connect({ name: 'background-timer-port' });
 
-		_port.onMessage.addListener(({ countDown }) => {
-			// T = Timer
+		_port.onMessage.addListener(({ countDown, interval, isTimerActive }) => {
+			_interval = interval
+			_isTimerActive = isTimerActive;
 			_countDown = countDown;
 		})
-
-		const BackgroundWindow = browser.extension.getBackgroundPage()
-
-		_start = BackgroundWindow.start
 	})
 
 	_port && _port.onMessage.addListener(({ countDown }) => {
 		_countDown = countDown;
 	})
-
-	// pass functions as events?
 </script>
 
 <Timer 
-	start={_start}
+	{start}
 	countDown={_countDown}
 />
