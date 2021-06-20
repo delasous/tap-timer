@@ -1,4 +1,6 @@
 <script>
+	import { beforeUpdate } from 'svelte';
+
 	import Editable from './Editable.svelte';
 	import EditTime from './EditTime.svelte';
 	import DisplayTime from './DisplayTime.svelte';
@@ -6,6 +8,7 @@
 	export let countDown;
 	export let interval;
 	export let isTimerActive;
+	export let isTimeRemaining;
 
 	export let start;  
 	export let stop;
@@ -15,6 +18,10 @@
 	let mins = '';
 	let secs = '';
 
+	let startButton;
+	let stopButton;
+	let resetButton;
+
 	const hoursToSecs = (hours) => hours * 60 * 60;
 	const minsToSecs = (mins) => mins * 60;
 
@@ -23,77 +30,132 @@
 	$: H = Math.floor((countDown % (60 * 60 * 24)) / (60 * 60));
 	$: M = Math.floor((countDown % (60 * 60)) / (60));
 	$: S = Math.floor(countDown % (60));
+
+	beforeUpdate(() => {
+		console.log('current', input, countDown, interval, isTimerActive, isTimeRemaining, H, M, S)
+	})
 </script>
 
 <div class='app'>
-	<Editable isEditing={isTimerActive} >
-		<svelte:fragment slot='edit'>
-			<EditTime bind:hours bind:mins bind:secs />
-		</svelte:fragment>
-		<svelte:fragment slot='display'>
-			<DisplayTime {H} {M} {S} />
-		</svelte:fragment>
-	</Editable>
+	<div class='time-container'>
+		<Editable isEditing={isTimeRemaining} >
+			<svelte:fragment slot='edit'>
+				<EditTime bind:hours bind:mins bind:secs />
+			</svelte:fragment>
+			<svelte:fragment slot='display'>
+				<DisplayTime {H} {M} {S} />
+			</svelte:fragment>
+		</Editable>
+	</div>
 
-	<div class='container'>
-			<button on:click={start(input)} disabled="{interval || input == 0}">Start</button>
-		{#if interval}
-			<button on:click={stop(interval)} disabled="{!interval}">Pause</button>
-		{:else}
+	<div class='button-container'>
 			<button 
+				class='button-top' 
+				bind:this={startButton}
+				disabled={input == 0 || interval}
 				on:click={() => {
-          H = M = S = 0;
-          reset()
-        }} 
-				disabled="{interval || !input || (countDown === input)}"
+					start(input)
+					// startButton.disabled = true;
+					// stopButton.disabled = false;
+					// resetButton.disabled = true;
+				}} 
+			>Play</button>
+			{#if isTimerActive}
+			<button 
+				class='button-bottom' 
+				bind:this={stopButton}
+				disabled={!isTimerActive}
+				on:click={() => {
+					stop() 
+					// startButton.disabled = false;
+					// stopButton.disabled = true;
+					// resetButton.disabled = false;
+				}} 
+			>Pause</button>
+			{:else}
+			<button 
+				class='button-bottom'
+				bind:this={resetButton}
+				disabled={interval || !input || (countDown === input)}
+				on:click={() => {
+          			H = M = S = 0;
+          			reset()
+					// startButton.disabled = false;
+					// stopButton.disabled = true;
+					// resetButton.disabled = false;
+        		}} 
 			>Reset</button>
-		{/if}
+			{/if}
 	</div>	
 </div>
 
 <style>
-	:global(*) {
-		box-sizing: border-box;
-
+	:global(body){
+		margin: 0;
 	}
 
-	:global(.container) {
-			height: 100%;
-			width: 75%;
-			margin: 5px 0;
-			display: flex;
-			justify-content: center;
+	:global(*) {
+		box-sizing: border-box;
 	}
 
 	:global(.time) {
-		font-family: 'Montserrat';
-		font-size: 3rem;
-		text-align: center;
+		display: inline-block;
+		min-width: 5rem;
 		padding: 0;
-		margin: 5px 2px;
-		min-width: 6.5rem;
+		margin: 0;
+		font-size: 3rem;
 		font-weight: 400;
+		text-align: center;
 	}
 
 	:global(span) {
 		font-size: 3rem;
-		font-family: 'Montserrat';
 	}
 
 	.app {
-		height: 10rem;
+		height: 8rem;
+		width: 25rem;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
 	}
 
+	.time-container {
+		height: 100%;
+		width: 70%;
+		margin-left: 10px;
+		display:  flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	.button-container {
+		height: 100%;
+		width: 25%;
+		margin: 5px 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
 	button {
-		font-size: 1rem;
-		width: 35%;
-		max-width: 200px;
-		height: auto;
-		font-family: 'Montserrat';
-		font-weight: 700;
+		width: 100%;
+		height: 50%;
+		background: #FFFFFF;
+	}
+
+	.button-top {
+		border-top:    5px solid #111827;
+		border-right:  5px solid #111827;
+		border-bottom: 2.5px solid #111827;
+		border-left:   5px solid #111827;
+	}
+
+	.button-bottom {
+		border-top:    2.5px solid #111827;
+		border-right:  5px solid #111827;
+		border-bottom: 5px solid #111827;
+		border-left:   5px solid #111827;
 	}
 </style>

@@ -14,11 +14,10 @@
 		T.messanger = port
 		T.notifyState();
 
-		port.onMessage.addListener(({ msg, input, interval }) => {
+		port.onMessage.addListener(({ msg, input }) => {
 			if (msg === 'start-timer') T.start(input);
-			if (msg === 'stop-timer') T.stop(interval);
+			if (msg === 'stop-timer') T.stop();
 			if (msg === 'reset-timer') T.reset();
-
 			return;
 		})
 

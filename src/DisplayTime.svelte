@@ -3,7 +3,7 @@
     export let H, M, S;
 </script>
 
-<div class='container'>
+<div>
     <Label type='Hours' count={H} />
         <span>:</span>
     <Label type='Minutes' count={M} />

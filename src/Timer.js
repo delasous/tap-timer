@@ -1,8 +1,10 @@
 class Timer {
 	input;
 	countDown;
-	interval;
 	isTimerActive = false; 
+	isTimeRemaining = false;
+
+	interval;
 
 	messanger;
 
@@ -12,37 +14,38 @@ class Timer {
 
 	notifyState() {
 		// recreates state every pass 
-		const state = {
-			countDown: this.countDown,
-			interval: this.interval,
-			isTimerActive: this.isTimerActive,
-		}
-
-		if (this.messanger) this.messanger.postMessage({ msg: 'timer-state', state })		
+		let countDown = this.countDown;
+		let	interval = this.interval;
+	    let isTimerActive = this.isTimerActive;
+		let isTimeRemaining = this.isTimeRemaining;
+	
+		if (this.messanger) this.messanger.postMessage({ msg: 'timer-state', countDown, interval, isTimerActive, isTimeRemaining })		
 	}
 	
-	stop(interval) {
-		clearInterval(interval);
+	stop() {
+		clearInterval(this.interval);
 		this.interval = null;
+		this.isTimerActive = false;
 		this.notifyState() 
 	}
 	
 	reset() {
-		stop();
+		this.stop();
 		this.countDown = this.input;
-		this.isTimerActive = false;
+		this.isTimeRemaining = false;
 		this.notifyState()
 	}
 	
 	start(input) {	
 		this.input = input;
-		this.countDown = this.input;
+		this.countDown = this.isTimeRemaining ? this.countDown : this.input;
 		this.isTimerActive = true;
+		this.isTimeRemaining = true;
 	
 		this.interval = setInterval(() => {
 			if (this.countDown === 0) {
 				// end(); // fires end strategy
-				stop();
+				this.stop();
 				return;
 			}
 

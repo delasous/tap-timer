@@ -3,7 +3,7 @@
     export let hours, mins, secs;
 </script>
 
-<div class='container'>
+<div>
     <Input name='Hours' max=23 bind:value={hours} />
         <span>:</span>
     <Input name='Minutes' max=59 bind:value={mins} />
