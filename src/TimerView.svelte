@@ -2,6 +2,11 @@
 	import Editable from './Editable.svelte';
 	import EditTime from './EditTime.svelte';
 	import DisplayTime from './DisplayTime.svelte';
+	import Button from './Button.svelte';
+
+	import Play from './PlayIcon.svelte';
+	import Pause from './PauseIcon.svelte';
+	import Refresh from './ResetIcon.svelte';
 
 	export let countDown;
 	export let interval;
@@ -43,13 +48,17 @@
 				class='button-top'
 				disabled={input == 0 || interval}
 				on:click={() => start(input)} 
-			>Play</button>
+			>
+				<Play />
+			</button>
 			{#if isTimerActive}
 				<button 
 					class='button-bottom' 
 					disabled={!isTimerActive}
 					on:click={() => stop()} 
-				>Pause</button>
+				>
+					<Pause />
+				</button>
 			{:else}
 				<button 
 					class='button-bottom'
@@ -58,7 +67,9 @@
 						H = M = S = 0;
 						reset()
 					}} 
-				>Reset</button>
+				>
+					<Refresh />
+				</button>
 			{/if}
 	</div>	
 </div>
@@ -74,10 +85,10 @@
 
 	:global(.time) {
 		display: inline-block;
-		min-width: 5rem;
+		min-width: 4rem;
 		padding: 0;
 		margin: 0;
-		font-size: 3rem;
+		font-size: 2.5rem;
 		font-weight: 400;
 		text-align: center;
 	}
@@ -97,7 +108,7 @@
 
 	.time-container {
 		height: 100%;
-		width: 70%;
+		width: 60%;
 		margin: 0 auto;
 		display:  flex;
 		align-items: center;
