@@ -1,6 +1,4 @@
 <script>
-	import { beforeUpdate } from 'svelte';
-
 	import Editable from './Editable.svelte';
 	import EditTime from './EditTime.svelte';
 	import DisplayTime from './DisplayTime.svelte';
@@ -18,10 +16,6 @@
 	let mins = '';
 	let secs = '';
 
-	let startButton;
-	let stopButton;
-	let resetButton;
-
 	const hoursToSecs = (hours) => hours * 60 * 60;
 	const minsToSecs = (mins) => mins * 60;
 
@@ -30,10 +24,6 @@
 	$: H = Math.floor((countDown % (60 * 60 * 24)) / (60 * 60));
 	$: M = Math.floor((countDown % (60 * 60)) / (60));
 	$: S = Math.floor(countDown % (60));
-
-	beforeUpdate(() => {
-		console.log('current', input, countDown, interval, isTimerActive, isTimeRemaining, H, M, S)
-	})
 </script>
 
 <div class='app'>
@@ -50,41 +40,25 @@
 
 	<div class='button-container'>
 			<button 
-				class='button-top' 
-				bind:this={startButton}
+				class='button-top'
 				disabled={input == 0 || interval}
-				on:click={() => {
-					start(input)
-					// startButton.disabled = true;
-					// stopButton.disabled = false;
-					// resetButton.disabled = true;
-				}} 
+				on:click={() => start(input)} 
 			>Play</button>
 			{#if isTimerActive}
-			<button 
-				class='button-bottom' 
-				bind:this={stopButton}
-				disabled={!isTimerActive}
-				on:click={() => {
-					stop() 
-					// startButton.disabled = false;
-					// stopButton.disabled = true;
-					// resetButton.disabled = false;
-				}} 
-			>Pause</button>
+				<button 
+					class='button-bottom' 
+					disabled={!isTimerActive}
+					on:click={() => stop()} 
+				>Pause</button>
 			{:else}
-			<button 
-				class='button-bottom'
-				bind:this={resetButton}
-				disabled={interval || !input || (countDown === input)}
-				on:click={() => {
-          			H = M = S = 0;
-          			reset()
-					// startButton.disabled = false;
-					// stopButton.disabled = true;
-					// resetButton.disabled = false;
-        		}} 
-			>Reset</button>
+				<button 
+					class='button-bottom'
+					disabled={interval || !input || (countDown === input)}
+					on:click={() => {
+						H = M = S = 0;
+						reset()
+					}} 
+				>Reset</button>
 			{/if}
 	</div>	
 </div>
