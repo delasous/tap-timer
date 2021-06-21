@@ -26,6 +26,10 @@
 </script>
 
 <style>
+	input::placeholder {
+		color: #111827;
+	}
+	
 	input::-webkit-inner-spin-button {
   		-webkit-appearance: none;
   		margin: 0;

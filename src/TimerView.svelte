@@ -98,7 +98,7 @@
 	.time-container {
 		height: 100%;
 		width: 70%;
-		margin-left: 10px;
+		margin: 0 auto;
 		display:  flex;
 		align-items: center;
 		justify-content: space-around;
@@ -120,16 +120,16 @@
 	}
 
 	.button-top {
-		border-top:    5px solid #111827;
-		border-right:  5px solid #111827;
-		border-bottom: 2.5px solid #111827;
-		border-left:   5px solid #111827;
+		border-bottom: 1px solid #111827;
+		border-left: 2px solid #111827;
+		border-right: none;
+		border-top: none;
 	}
 
 	.button-bottom {
-		border-top:    2.5px solid #111827;
-		border-right:  5px solid #111827;
-		border-bottom: 5px solid #111827;
-		border-left:   5px solid #111827;
+		border-top: 1px solid #111827;
+		border-left: 2px solid #111827;
+		border-right: none;
+		border-bottom: none;
 	}
 </style>
