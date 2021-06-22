@@ -5,7 +5,11 @@
 	
 	let holder = name.slice(0,1) + name.slice(0,1);
 	
-	const pad = (e) => e.target.value = e.target.value.toString().padStart(2, '0');
+	const pad = (e) => {
+		if(e.target.value > 0) {
+			e.target.value = e.target.value.toString().padStart(2, '0');
+		}
+	}
 	
 	const limitChars = (e) => {
 		if ((e.target.value.length === 2 && e.keyCode>47 && e.keyCode < 58) || 
@@ -26,6 +30,10 @@
 </script>
 
 <style>
+	input {
+		border: none;
+	}
+
 	input::placeholder {
 		color: #111827;
 	}
@@ -38,10 +46,6 @@
 	input:focus{
    		outline: none;
 		box-shadow: 0 4px 2px -2px #32a1ce;
-	}
-	
-	input {
-		border: none;
 	}
 </style>
 

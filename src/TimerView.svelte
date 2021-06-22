@@ -3,10 +3,9 @@
 	import EditTime from './EditTime.svelte';
 	import DisplayTime from './DisplayTime.svelte';
 	import Button from './Button.svelte';
-
-	import Play from './PlayIcon.svelte';
-	import Pause from './PauseIcon.svelte';
-	import Refresh from './ResetIcon.svelte';
+	import Play from './icons/PlayIcon.svelte';
+	import Pause from './icons/PauseIcon.svelte';
+	import Refresh from './icons/ResetIcon.svelte';
 
 	export let countDown;
 	export let interval;
@@ -44,32 +43,32 @@
 	</div>
 
 	<div class='button-container'>
-			<button 
+			<Button 
 				class='button-top'
 				disabled={input == 0 || interval}
-				on:click={() => start(input)} 
+				handleClick={() => start(input)} 
 			>
-				<Play />
-			</button>
+				<Play disabled={input == 0 || interval} />
+			</Button>
 			{#if isTimerActive}
-				<button 
+				<Button 
 					class='button-bottom' 
 					disabled={!isTimerActive}
-					on:click={() => stop()} 
+					handleClick={() => stop()} 
 				>
-					<Pause />
-				</button>
+					<Pause disabled={!isTimerActive} />
+				</Button>
 			{:else}
-				<button 
+				<Button 
 					class='button-bottom'
-					disabled={interval || !input || (countDown === input)}
-					on:click={() => {
+					disabled={interval || input == 0 || (countDown === input)}
+					handleClick={() => {
 						H = M = S = 0;
 						reset()
 					}} 
 				>
-					<Refresh />
-				</button>
+					<Refresh disabled={interval || input == 0 || (countDown === input)} />
+				</Button>
 			{/if}
 	</div>	
 </div>
@@ -122,25 +121,5 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-	}
-
-	button {
-		width: 100%;
-		height: 50%;
-		background: #FFFFFF;
-	}
-
-	.button-top {
-		border-bottom: 1px solid #111827;
-		border-left: 2px solid #111827;
-		border-right: none;
-		border-top: none;
-	}
-
-	.button-bottom {
-		border-top: 1px solid #111827;
-		border-left: 2px solid #111827;
-		border-right: none;
-		border-bottom: none;
 	}
 </style>

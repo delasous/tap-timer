@@ -10,7 +10,6 @@
 	let _isTimeRemaining;
 	let port;
 
-	// pass as events to Timer?
 	let start = (input) => port.postMessage({ msg: 'start-timer', input });
 	let stop = () => port.postMessage({ msg: 'stop-timer' });
 	let reset = () => port.postMessage({ msg: 'reset-timer' });
