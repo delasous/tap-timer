@@ -24,8 +24,7 @@
 		let input = e.target.value
 
 		if(input.length > 2) value = e.target.value.slice(0,2);
-		if(input.length === 2 && (parseInt(input) > limit)) e.target.value = limit;
-
+		if(input.length === 2 && (parseInt(input) > limit)) e.target.value = value = limit;
 	})(max)
 </script>
 

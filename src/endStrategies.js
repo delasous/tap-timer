@@ -1,8 +1,10 @@
 import browser from 'webextension-polyfill';
 
 const strategies = [{
+    display: 'Force Minimise Window',
     name: 'minimizeWindows',
-    run: async () => {
+    config: {},
+    run: async function() {
         let windows = await browser.windows.getAll()
 
         let minimizeWindows = windows.map((w) => {
@@ -10,7 +12,7 @@ const strategies = [{
         })
             
         await Promise.all(minimizeWindows);
-    }
+    },
 }]
 
 export default strategies;

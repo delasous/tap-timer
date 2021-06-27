@@ -13,9 +13,9 @@
 		T = Timer.getInstance();
 
 		T.messanger = port
-		T.notifyState();
+		T.endStrategy = endStrats[0]; // hardcoded to draft; set from UI settings page.
 
-		T.endStrategy = endStrats[0];
+		T.notifyState();
 
 		port.onMessage.addListener(({ msg, input }) => {
 			if (msg === 'fire-start') T.start(input);

@@ -1,13 +1,16 @@
 class Timer {
-	interval;
-	input;
 	countDown;
-	messanger;
+	interval;
 	isTimerActive = false; 
 	isTimeRemaining = false;
+
+	input;
+	messanger;
 	endStrategy = {
+		display: 'Default',
 		name: 'default',
-		run: async() => console.log('Timer has ended.')
+		config: {},
+		run: async () => console.log('Timer has ended.')
 	};
 
 	set messanger(messanger) {
@@ -35,6 +38,7 @@ class Timer {
 		this.notifyState() 
 	}
 	
+	// notifies state twice.
 	reset() {
 		this.pause();
 		this.countDown = this.input;
