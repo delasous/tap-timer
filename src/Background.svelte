@@ -1,6 +1,7 @@
 <script>
 	import browser from 'webextension-polyfill';
 
+	import endStrats from './endStrategies';
 	import Timer from './Timer';
 
 	let port;
@@ -14,10 +15,12 @@
 		T.messanger = port
 		T.notifyState();
 
+		T.endStrategy = endStrats[0];
+
 		port.onMessage.addListener(({ msg, input }) => {
-			if (msg === 'start-timer') T.start(input);
-			if (msg === 'stop-timer') T.stop();
-			if (msg === 'reset-timer') T.reset();
+			if (msg === 'fire-start') T.start(input);
+			if (msg === 'fire-pause') T.pause();
+			if (msg === 'fire-reset') T.reset();
 			return;
 		})
 

@@ -1,15 +1,21 @@
 class Timer {
+	interval;
 	input;
 	countDown;
+	messanger;
 	isTimerActive = false; 
 	isTimeRemaining = false;
-
-	interval;
-
-	messanger;
+	endStrategy = {
+		name: 'default',
+		run: async() => console.log('Timer has ended.')
+	};
 
 	set messanger(messanger) {
 		this.messanger = messanger
+	}
+
+	set endStategy(endStrategy) {
+		this.endStategy = endStrategy
 	}
 
 	notifyState() {
@@ -19,10 +25,10 @@ class Timer {
 	    let isTimerActive = this.isTimerActive;
 		let isTimeRemaining = this.isTimeRemaining;
 	
-		if (this.messanger) this.messanger.postMessage({ msg: 'timer-state', countDown, interval, isTimerActive, isTimeRemaining })		
+		if (this.messanger) this.messanger.postMessage({ msg: 'fire-state', countDown, interval, isTimerActive, isTimeRemaining })		
 	}
 	
-	stop() {
+	pause() {
 		clearInterval(this.interval);
 		this.interval = null;
 		this.isTimerActive = false;
@@ -30,10 +36,16 @@ class Timer {
 	}
 	
 	reset() {
-		this.stop();
+		this.pause();
 		this.countDown = this.input;
 		this.isTimeRemaining = false;
 		this.notifyState()
+	}
+
+	// run is async!
+	end() {
+		this.reset();
+		this.endStrategy.run()
 	}
 	
 	start(input) {	
@@ -44,8 +56,7 @@ class Timer {
 	
 		this.interval = setInterval(() => {
 			if (this.countDown === 0) {
-				// end(); // fires end strategy
-				this.stop();
+				this.end(); 
 				return;
 			}
 

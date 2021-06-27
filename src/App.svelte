@@ -10,20 +10,21 @@
 	let _isTimeRemaining;
 	let port;
 
-	let start = (input) => port.postMessage({ msg: 'start-timer', input });
-	let stop = () => port.postMessage({ msg: 'stop-timer' });
-	let reset = () => port.postMessage({ msg: 'reset-timer' });
+	let start = (input) => port.postMessage({ msg: 'fire-start', input });
+	let pause = () => port.postMessage({ msg: 'fire-pause' });
+	let reset = () => port.postMessage({ msg: 'fire-reset' });
 
 	onMount(async () => {
-		port = browser.runtime.connect({ name: 'background-timer-port' });
+		port = browser.runtime.connect({ name: 'background-port' });
 
 		port.onMessage.addListener(({ msg, countDown, interval, isTimerActive, isTimeRemaining }) => {
-			if (msg === 'timer-state') {
+			if (msg === 'fire-state') {
 				_countDown = countDown;
 				_interval = interval;
 				_isTimerActive = isTimerActive;
 				_isTimeRemaining = isTimeRemaining;
 			}
+
 			return;
 		})
 	})
@@ -35,6 +36,6 @@
 	isTimerActive={_isTimerActive}
 	isTimeRemaining={_isTimeRemaining}
 	{start}
-	{stop}
+	{pause}
 	{reset}
 />

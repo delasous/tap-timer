@@ -13,7 +13,7 @@
 	export let isTimeRemaining;
 
 	export let start;  
-	export let stop;
+	export let pause;
 	export let reset;
 
 	let hours = '';
@@ -54,7 +54,7 @@
 				<Button 
 					class='button-bottom' 
 					disabled={!isTimerActive}
-					handleClick={() => stop()} 
+					handleClick={() => pause()} 
 				>
 					<Pause disabled={!isTimerActive} />
 				</Button>
