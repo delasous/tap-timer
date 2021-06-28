@@ -11,6 +11,7 @@
 	export let interval;
 	export let isTimerActive;
 	export let isTimeRemaining;
+	export let _input;
 
 	export let start;  
 	export let pause;
@@ -23,7 +24,7 @@
 	const hoursToSecs = (hours) => hours * 60 * 60;
 	const minsToSecs = (mins) => mins * 60;
 
-	$: input = hoursToSecs(hours) + minsToSecs(mins) + secs;
+	$: input = _input ?? hoursToSecs(hours) + minsToSecs(mins) + secs;
 
 	$: H = Math.floor((countDown % (60 * 60 * 24)) / (60 * 60));
 	$: M = Math.floor((countDown % (60 * 60)) / (60));

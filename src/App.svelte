@@ -5,6 +5,7 @@
 	import Timer from './TimerView.svelte';
 
 	let _countDown;
+	let _input;
 	let _interval;
 	let _isTimerActive;
 	let _isTimeRemaining;
@@ -17,12 +18,13 @@
 	onMount(async () => {
 		port = browser.runtime.connect({ name: 'background-port' });
 
-		port.onMessage.addListener(({ msg, countDown, interval, isTimerActive, isTimeRemaining }) => {
+		port.onMessage.addListener(({ msg, countDown, interval, isTimerActive, isTimeRemaining, input }) => {
 			if (msg === 'fire-state') {
 				_countDown = countDown;
 				_interval = interval;
 				_isTimerActive = isTimerActive;
 				_isTimeRemaining = isTimeRemaining;
+				_input = input;
 			}
 
 			return;
@@ -35,6 +37,7 @@
 	interval={_interval}
 	isTimerActive={_isTimerActive}
 	isTimeRemaining={_isTimeRemaining}
+	{_input}
 	{start}
 	{pause}
 	{reset}

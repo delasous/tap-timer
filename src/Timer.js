@@ -1,10 +1,10 @@
 class Timer {
 	countDown;
+	input;
 	interval;
 	isTimerActive = false; 
 	isTimeRemaining = false;
 
-	input;
 	messanger;
 	endStrategy = {
 		display: 'Default',
@@ -27,8 +27,9 @@ class Timer {
 		let	interval = this.interval;
 	    let isTimerActive = this.isTimerActive;
 		let isTimeRemaining = this.isTimeRemaining;
+		let input = this.input;
 	
-		if (this.messanger) this.messanger.postMessage({ msg: 'fire-state', countDown, interval, isTimerActive, isTimeRemaining })		
+		if (this.messanger) this.messanger.postMessage({ msg: 'fire-state', countDown, interval, isTimerActive, isTimeRemaining, input })		
 	}
 	
 	pause() {
