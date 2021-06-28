@@ -43,6 +43,7 @@ class Timer {
 	reset() {
 		this.pause();
 		this.countDown = this.input;
+		this.input = null;
 		this.isTimeRemaining = false;
 		this.notifyState()
 	}
@@ -53,7 +54,10 @@ class Timer {
 		this.endStrategy.run()
 	}
 	
-	start(input) {	
+	start(input) {
+		// quick debounce;	
+		if (this.interval) return;
+		
 		this.input = input;
 		this.countDown = this.isTimeRemaining ? this.countDown : this.input;
 		this.isTimerActive = true;

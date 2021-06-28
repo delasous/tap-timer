@@ -6,8 +6,32 @@
 
 	let port;
 	let T;
+	let activeIcon = false;
 
-	const connected = (p) => {
+	function toggleIcon() {
+		activeIcon = !activeIcon;
+		let icon = activeIcon ? { 19: "star-filled-19.png" } :  { 19: "star-empty-19.png" }
+
+		browser.browserAction.setIcon({
+			path: icon,
+		})
+	}
+
+	function start(input) {
+		toggleIcon();
+		T.start(input);
+	}
+
+	function pause() {
+		toggleIcon();
+		T.pause();
+	}
+
+	function reset() { 
+		T.reset() 
+	};
+
+	function connectToAppPort (p) {
 		port = p;
 			
 		T = Timer.getInstance();
@@ -17,15 +41,35 @@
 
 		T.notifyState();
 
-		port.onMessage.addListener(({ msg, input }) => {
-			if (msg === 'fire-start') T.start(input);
-			if (msg === 'fire-pause') T.pause();
-			if (msg === 'fire-reset') T.reset();
-			return;
-		})
+		const fireActions = ({ msg, input }) => {
+			if (msg === 'fire-start') start(input);
+			if (msg === 'fire-pause') pause();
+			if (msg === 'fire-reset') reset();
+		}
 
-		port.onDisconnect.addListener(() => T.messanger = undefined)
+		const removeActions = () => {
+			T.messanger = undefined;
+			port.onMessage.removeListener(fireActions)
+			port.onDisconnect.removeListener(removeActions)
+		}
+		
+		port.onMessage.addListener(fireActions)
+		port.onDisconnect.addListener(removeActions)
 	}
 
-	browser.runtime.onConnect.addListener(connected);
+	function hotKeys(cmd) {
+		T = Timer.getInstance();
+		T.endStrategy = endStrats[0]; 
+
+		if (cmd === 'hot-start-20') start(1200);
+		if (cmd === 'hot-start-10') start(600);
+		if (cmd === 'hot-pause') pause();
+		if (cmd === 'hot-reset') reset();
+	}
+
+	browser.runtime.onConnect.addListener(connectToAppPort);
+	browser.commands.onCommand.addListener(hotKeys)
+
+	browser.runtime.onSuspend.removeListener(connectToAppPort);
+	browser.runtime.onSuspend.removeListener(hotKeys);
 </script>

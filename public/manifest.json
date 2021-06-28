@@ -3,12 +3,45 @@
     "description": "A tiny timer that lives in the browser",
     "manifest_version": 2,
     "version": "0.0.1",
-    "icons": {},
     "browser_action": {
-        "default_popup": "index.html"
+        "default_popup": "index.html",
+        "default_icon": {
+            "19": "star-empty-19.png"
+        },
+        "browser_style": true
     },
     "background": {
         "page": "background.html",
         "persistent": true
-    }
+    },
+    "commands": {
+        "hot-start-20": {
+          "suggested_key": {
+            "default": "Alt+2",
+            "linux": "Alt+2"
+          },
+          "description": "Hot Start 20 mins."
+        },
+        "hot-start-10": {
+            "suggested_key": {
+              "default": "Alt+1",
+              "linux": "Alt+1"
+            },
+            "description": "Hot Start 10 mins."
+        },
+        "hot-pause": {
+            "suggested_key": {
+              "default": "Alt+S",
+              "linux": "Alt+S"
+            },
+            "description": "Hot Pause."
+        },
+        "hot-reset": {
+            "suggested_key": {
+              "default": "Alt+R",
+              "linux": "Alt+R"
+            },
+            "description": "Hot Reset."
+        }
+      }
 }    

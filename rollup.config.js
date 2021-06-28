@@ -60,7 +60,9 @@ export default [{
 					'global.css',
 					'index.html',
 					'background.html',
-					'manifest.json'
+					'manifest.json',
+					'icon-active-19.png',
+					'icon-inactive-19.png',
 				]
 			})
 		],

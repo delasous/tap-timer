@@ -1,6 +1,6 @@
 <script>
 	import browser from 'webextension-polyfill';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
 	import Timer from './TimerView.svelte';
 
@@ -15,21 +15,22 @@
 	let pause = () => port.postMessage({ msg: 'fire-pause' });
 	let reset = () => port.postMessage({ msg: 'fire-reset' });
 
-	onMount(async () => {
+	function connectToBackgroundPort({ msg, countDown, interval, isTimerActive, isTimeRemaining, input }) {
+		if (msg === 'fire-state') {
+			_countDown = countDown;
+			_interval = interval;
+			_isTimerActive = isTimerActive;
+			_isTimeRemaining = isTimeRemaining;
+			_input = input;
+		}
+	}
+
+	onMount(async() => {
 		port = browser.runtime.connect({ name: 'background-port' });
-
-		port.onMessage.addListener(({ msg, countDown, interval, isTimerActive, isTimeRemaining, input }) => {
-			if (msg === 'fire-state') {
-				_countDown = countDown;
-				_interval = interval;
-				_isTimerActive = isTimerActive;
-				_isTimeRemaining = isTimeRemaining;
-				_input = input;
-			}
-
-			return;
-		})
+		port.onMessage.addListener(connectToBackgroundPort)
 	})
+
+	onDestroy(async() => port.onMessage.removeListener(connectToBackgroundPort))
 </script>
 
 <Timer 
