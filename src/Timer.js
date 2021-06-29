@@ -33,6 +33,8 @@ class Timer {
 	}
 	
 	pause() {
+		if(!this.interval) return;
+
 		clearInterval(this.interval);
 		this.interval = null;
 		this.isTimerActive = false;
@@ -55,7 +57,6 @@ class Timer {
 	}
 	
 	start(input) {
-		// quick debounce;	
 		if (this.interval) return;
 		
 		this.input = input;

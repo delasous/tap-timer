@@ -62,13 +62,13 @@
 			{:else}
 				<Button 
 					class='button-bottom'
-					disabled={interval || input == 0 || (countDown === input)}
+					disabled={interval || !isTimeRemaining}
 					handleClick={() => {
 						H = M = S = 0;
 						reset()
 					}} 
 				>
-					<Refresh disabled={interval || input == 0 || (countDown === input)} />
+					<Refresh disabled={interval || !isTimeRemaining} />
 				</Button>
 			{/if}
 	</div>	
