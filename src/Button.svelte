@@ -19,15 +19,15 @@
 	}
 
 	.button-top {
-		border-bottom: 1px solid #111827;
-		border-left: 2px solid #111827;
+		border-bottom: 1px solid #313638;
+		border-left: 2px solid #313638;
 		border-right: none;
 		border-top: none;
 	}
 
 	.button-bottom {
-		border-top: 1px solid #111827;
-		border-left: 2px solid #111827;
+		border-top: 1px solid #313638;
+		border-left: 2px solid #313638;
 		border-right: none;
 		border-bottom: none;
 	}

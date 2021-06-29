@@ -34,7 +34,7 @@
 	}
 
 	input::placeholder {
-		color: #111827;
+		color: #313638;
 	}
 	
 	input::-webkit-inner-spin-button {
@@ -44,7 +44,7 @@
 	
 	input:focus{
    		outline: none;
-		box-shadow: 0 4px 2px -2px #32a1ce;
+		box-shadow: 0 4px 2px -2px #F06543;
 	}
 </style>
 

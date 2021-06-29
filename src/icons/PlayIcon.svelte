@@ -1,7 +1,7 @@
 <script>
     export let disabled;
 
-    $: color = disabled ? "#BABABA" : "#111827";
+    $: color = disabled ? "#E0DFD5" : "#313638";
 </script>
 
 <div class="icon" class:magic="{ !disabled }">
