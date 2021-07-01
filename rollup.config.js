@@ -61,8 +61,8 @@ export default [{
 					'index.html',
 					'background.html',
 					'manifest.json',
-					'icon-active-16.png',
-					'icon-inactive-16.png',
+					'icon-active-19.png',
+					'icon-inactive-19.png',
 				]
 			})
 		],

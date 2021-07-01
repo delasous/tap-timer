@@ -8,8 +8,7 @@
 	let T;
 
 	function toggleIcon({ interval }) {
-		console.log(interval)
-		let icon = interval ? { 16: "icon-active-16.png" } :  { 16: "icon-inactive-16.png" }
+		let icon = interval ? { 16: "icon-active-19.png" } :  { 16: "icon-inactive-19.png" }
 
 		browser.browserAction.setIcon({
 			path: icon,
@@ -47,6 +46,7 @@
 		T = Timer.getInstance();
 		T.endStrategy = endStrats[0]; 
 
+		if (cmd === 'hot-start-30') T.start(1800);
 		if (cmd === 'hot-start-20') T.start(1200);
 		if (cmd === 'hot-start-10') T.start(600);
 		if (cmd === 'hot-pause') T.pause();

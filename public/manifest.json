@@ -6,7 +6,7 @@
     "browser_action": {
         "default_popup": "index.html",
         "default_icon": {
-            "16": "icon-inactive-16.png"
+            "19": "icon-inactive-19.png"
         },
         "browser_style": true
     },
@@ -15,6 +15,13 @@
         "persistent": true
     },
     "commands": {
+      "hot-start-30": {
+        "suggested_key": {
+          "default": "Alt+3",
+          "linux": "Alt+3"
+        },
+        "description": "Hot Start 30 mins."
+      },
         "hot-start-20": {
           "suggested_key": {
             "default": "Alt+2",
