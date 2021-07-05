@@ -1,7 +1,9 @@
 <script>
 	import browser from 'webextension-polyfill';
 
-	import endStrats from './endStrategies';
+	import toggleIcon from './utils/toggleIcon';
+	import endStrats from './utils/endStrategies';
+
 	import Timer from './Timer';
 
 	let port;
@@ -21,6 +23,8 @@
 			if (msg === 'fire-start') T.start(input);
 			if (msg === 'fire-pause') T.pause();
 			if (msg === 'fire-reset') T.reset();
+
+			toggleIcon(T.interval)
 		}
 
 		const removeActions = () => {
@@ -41,6 +45,8 @@
 		if (cmd === 'hot-start-20') T.start(1200);
 		if (cmd === 'hot-pause') T.pause();
 		if (cmd === 'hot-reset') T.reset();
+		
+		toggleIcon(T.interval)
 	}
 
 	browser.runtime.onConnect.addListener(connectToAppPort);

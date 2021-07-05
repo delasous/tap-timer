@@ -15,12 +15,6 @@
 	let pause = () => port.postMessage({ msg: 'fire-pause' });
 	let reset = () => port.postMessage({ msg: 'fire-reset' });
 
-	function toggleIcon({ interval }) {
-		let icon = interval ? { "32": "icon-active-32.png" } :  { "32": "icon-inactive-32.png" };
-		// async
-		 browser.browserAction.setIcon({ path: icon });
-	}
-
 	function connectToBackgroundPort({ msg, countDown, interval, isTimerActive, isTimeRemaining, input }) {
 		if (msg === 'fire-state') {
 			_countDown = countDown;
@@ -29,7 +23,6 @@
 			_isTimeRemaining = isTimeRemaining;
 			_input = input;
 		}
-		toggleIcon({interval})
 	}
 
 	onMount(async() => {

@@ -53,7 +53,8 @@ class Timer {
 	// run is async!
 	end() {
 		this.reset();
-		this.endStrategy.run()
+		// TODO: pass entire Timer state
+		this.endStrategy.run(this.interval) 
 	}
 	
 	start(input) {
