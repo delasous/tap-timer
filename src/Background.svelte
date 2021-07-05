@@ -8,9 +8,9 @@
 	let T;
 
 	function toggleIcon({ interval }) {
-		let icon = interval ? { 16: "icon-active-19.png" } :  { 16: "icon-inactive-19.png" }
+		let icon = interval ? { "32": "icon-active-32.png" } :  { "32": "icon-inactive-32.png" }
 
-		browser.browserAction.setIcon({
+		 browser.browserAction.setIcon({
 			path: icon,
 		})
 	}
@@ -48,7 +48,6 @@
 
 		if (cmd === 'hot-start-30') T.start(1800);
 		if (cmd === 'hot-start-20') T.start(1200);
-		if (cmd === 'hot-start-10') T.start(600);
 		if (cmd === 'hot-pause') T.pause();
 		if (cmd === 'hot-reset') T.reset();
 		toggleIcon(T)
