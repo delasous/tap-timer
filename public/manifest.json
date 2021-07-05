@@ -15,12 +15,12 @@
         "persistent": true
     },
     "commands": {
-      "hot-start-30": {
+      "hot-start-40": {
         "suggested_key": {
           "default": "Alt+3",
-          "linux": "Alt+3"
+          "linux": "Alt+4"
         },
-        "description": "Hot Start 30 mins."
+        "description": "Hot Start 40 mins."
       },
         "hot-start-20": {
           "suggested_key": {

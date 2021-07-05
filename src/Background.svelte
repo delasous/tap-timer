@@ -6,15 +6,7 @@
 
 	let port;
 	let T;
-
-	function toggleIcon({ interval }) {
-		let icon = interval ? { "32": "icon-active-32.png" } :  { "32": "icon-inactive-32.png" }
-
-		 browser.browserAction.setIcon({
-			path: icon,
-		})
-	}
-
+	
 	function connectToAppPort (p) {
 		port = p;
 			
@@ -29,7 +21,6 @@
 			if (msg === 'fire-start') T.start(input);
 			if (msg === 'fire-pause') T.pause();
 			if (msg === 'fire-reset') T.reset();
-			toggleIcon(T)
 		}
 
 		const removeActions = () => {
@@ -46,11 +37,10 @@
 		T = Timer.getInstance();
 		T.endStrategy = endStrats[0]; 
 
-		if (cmd === 'hot-start-30') T.start(1800);
+		if (cmd === 'hot-start-40') T.start();
 		if (cmd === 'hot-start-20') T.start(1200);
 		if (cmd === 'hot-pause') T.pause();
 		if (cmd === 'hot-reset') T.reset();
-		toggleIcon(T)
 	}
 
 	browser.runtime.onConnect.addListener(connectToAppPort);
