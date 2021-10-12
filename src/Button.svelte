@@ -13,22 +13,8 @@
 
 <style>
 	button {
-		width: 100%;
-		height: 50%;
+		border: none;
 		background: #FFFFFF;
-	}
-
-	.button-top {
-		border-bottom: 1px solid #E0DFD5;
-		border-left: 2px solid #E0DFD5;
-		border-right: none;
-		border-top: none;
-	}
-
-	.button-bottom {
-		border-top: 1px solid #E0DFD5;
-		border-left: 2px solid #E0DFD5;
-		border-right: none;
-		border-bottom: none;
+		padding: 0px
 	}
 </style>

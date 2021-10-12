@@ -2,6 +2,7 @@
 	export let name;
 	export let max;
 	export let value;
+	export let size;
 	
 	let holder = name.slice(0,1) + name.slice(0,1);
 	
@@ -30,7 +31,9 @@
 
 <style>
 	input {
+		display: block;
 		border: none;
+		border-bottom: 3px #313638 solid
 	}
 
 	input::placeholder {
@@ -44,13 +47,13 @@
 	
 	input:focus{
    		outline: none;
-		box-shadow: 0 4px 2px -2px #F06543;
+		border-bottom: 3px #FFBEB0 solid
 	}
 </style>
 
 <input 
-	class='time'
 	type="number" placeholder={holder} min="0" max={max} 
+	class={size}
 	bind:value
 	on:onchange={limitChars}
 	on:focusout={pad}

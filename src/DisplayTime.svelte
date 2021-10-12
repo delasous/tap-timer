@@ -4,10 +4,23 @@
     export let H, M, S;
 </script>
 
-<div>
-    <Label type='Hours' count={H} />
+<div class='container'>
+    <Label type='Hours' count={H} size='bigtime' />
         <span>:</span>
-    <Label type='Minutes' count={M} />
+    <Label type='Minutes' count={M} size='bigtime' />
         <span>:</span>
-    <Label type='Seconds' count={S} />
+    <Label type='Seconds' count={S} size='smalltime' />
 </div>
+
+<style>
+    .container {
+        display: flex;
+    }
+
+    span {
+        display: block;
+        border: none;
+        border-bottom: 3px #313638 solid;
+        font-size: 4rem;
+    }
+</style>
