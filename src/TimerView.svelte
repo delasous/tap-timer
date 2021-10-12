@@ -6,6 +6,7 @@
 	import Play from './icons/PlayIcon.svelte';
 	import Pause from './icons/PauseIcon.svelte';
 	import Stop from './icons/StopIcon.svelte';
+	import TapIcon from './icons/TapIcon.svelte';
 
 	export let countDown;
 	export let interval;
@@ -74,6 +75,9 @@
 				{/if}
 		</div>	
 	</div>
+	<div class='footer'>
+		<TapIcon />
+	</div>
 </div>
 
 <style>
@@ -111,7 +115,7 @@
 
 	.app {
 		width: 24rem;
-		margin: 2rem 0;
+		margin: 2rem 0 1rem;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -125,6 +129,13 @@
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
+	}
+
+	.footer {
+		width: 10%;
+		display: flex;
+		flex-direction: column;
+		align-self: end;
 	}
 
 	.time-container {
