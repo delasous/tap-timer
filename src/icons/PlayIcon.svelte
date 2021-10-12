@@ -37,7 +37,7 @@
 
 	.magic:hover {
         border-radius: 999px;
-        border: 3px solid #E3DCD2;
+        border: 3px solid #FFBEB0;
 	}
 </style>
 
