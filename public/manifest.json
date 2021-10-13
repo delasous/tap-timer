@@ -1,8 +1,10 @@
 {
     "name": "tap-timer",
-    "description": "A tiny timer that lives in the browser",
+    "description": "A tiny timer that lives in your browser.",
     "manifest_version": 2,
     "version": "0.0.1",
+    "permissions": ["storage"], 
+    "options_page": "options.html", 
     "browser_action": {
         "default_popup": "index.html",
         "default_icon": {
@@ -15,19 +17,19 @@
         "persistent": true
     },
     "commands": {
-      "hot-start-40": {
+      "hot-start-1": {
         "suggested_key": {
-          "default": "Alt+3",
-          "linux": "Alt+4"
+          "default": "Alt+2",
+          "linux": "Alt+2"
         },
-        "description": "Hot Start 40 mins."
+        "description": "Hot Start X mins."
       },
-        "hot-start-20": {
+        "hot-start-2": {
           "suggested_key": {
-            "default": "Alt+2",
-            "linux": "Alt+2"
+            "default": "Alt+3",
+            "linux": "Alt+3"
           },
-          "description": "Hot Start 20 mins."
+          "description": "Hot Start X mins."
         },
         "hot-pause": {
             "suggested_key": {

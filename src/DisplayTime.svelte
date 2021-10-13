@@ -7,7 +7,7 @@
 <div class='container'>
     <Label type='Hours' count={H} size='bigtime' />
         <span>:</span>
-    <Label type='Minutes' count={M} size='bigtime' />
+    <Label type='Minutes' count={M} size='bigtime wideMin' />
         <span>:</span>
     <Label type='Seconds' count={S} size='smalltime' />
 </div>

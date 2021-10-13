@@ -1,4 +1,6 @@
 <script>
+	import browser from 'webextension-polyfill';
+
 	import Editable from './Editable.svelte';
 	import EditTime from './EditTime.svelte';
 	import DisplayTime from './DisplayTime.svelte';
@@ -6,7 +8,7 @@
 	import Play from './icons/PlayIcon.svelte';
 	import Pause from './icons/PauseIcon.svelte';
 	import Stop from './icons/StopIcon.svelte';
-	import TapIcon from './icons/TapIcon.svelte';
+	import LogoIcon from './icons/LogoIcon.svelte';
 
 	export let countDown;
 	export let interval;
@@ -30,6 +32,10 @@
 	$: H = Math.floor((countDown % (60 * 60 * 24)) / (60 * 60));
 	$: M = Math.floor((countDown % (60 * 60)) / (60));
 	$: S = Math.floor(countDown % (60));
+
+	const openOptions = () => {
+		browser.runtime.openOptionsPage()
+	}
 </script>
 
 <div class='app'>
@@ -46,13 +52,6 @@
 		</div>
 
 		<div class='button-container'>
-				<Button 
-					class='button-top'
-					disabled={input == 0 || interval}
-					handleClick={() => start(input)} 
-				>
-					<Play disabled={input == 0 || interval} />
-				</Button>
 				{#if isTimerActive}
 					<Button 
 						class='button-bottom' 
@@ -63,6 +62,14 @@
 					</Button>
 				{:else}
 					<Button 
+						class='button-top'
+						disabled={input == 0 || interval}
+						handleClick={() => start(input)} 
+					>
+						<Play disabled={input == 0 || interval} />
+					</Button>
+				{/if}
+					<Button 
 						class='button-bottom'
 						disabled={interval || !isTimeRemaining}
 						handleClick={() => {
@@ -72,11 +79,10 @@
 					>
 						<Stop disabled={interval || !isTimeRemaining} />
 					</Button>
-				{/if}
 		</div>	
 	</div>
 	<div class='footer'>
-		<TapIcon />
+		<LogoIcon handleClick={openOptions} />
 	</div>
 </div>
 
@@ -97,6 +103,10 @@
 		font-size: 4rem;
 		font-weight: 400;
 		text-align: center;
+	}
+
+	:global(.wideMin) {
+		padding: 0 5px;
 	}
 
 	:global(.bigtime::placeholder) {

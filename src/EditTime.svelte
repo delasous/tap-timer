@@ -7,7 +7,7 @@
 <div class='container'>
     <Input name='Hours' max=23 bind:value={hours} size='bigtime' />
         <span>:</span>
-    <Input name='Minutes' max=59 bind:value={mins} size='bigtime' />
+    <Input name='Minutes' max=59 bind:value={mins} size='bigtime wideMin' />
         <span>:</span>
     <Input name='Seconds' max=59 bind:value={secs} size='smalltime' />
 </div>

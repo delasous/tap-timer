@@ -37,12 +37,15 @@
 		port.onDisconnect.addListener(removeActions)
 	}
 
-	function hotKeys(cmd) {
+	async function hotKeys(cmd) {
 		T = Timer.getInstance();
 		T.endStrategy = endStrats[0]; 
 
-		if (cmd === 'hot-start-40') T.start();
-		if (cmd === 'hot-start-20') T.start(1200);
+		// not optimal - just test.
+		const { hotStart1 } = await browser.storage.sync.get('hotStart1')
+
+		if (cmd === 'hot-start-1') T.start(hotStart1 * 60);
+		if (cmd === 'hot-start-2') T.start();
 		if (cmd === 'hot-pause') T.pause();
 		if (cmd === 'hot-reset') T.reset();
 		

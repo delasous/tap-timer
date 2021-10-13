@@ -60,6 +60,7 @@ export default [{
 					'global.css',
 					'index.html',
 					'background.html',
+					'options.html',
 					'manifest.json',
 					'icon-active-32.png',
 					'icon-inactive-32.png',
@@ -84,7 +85,34 @@ export default [{
 					dev: !production
 				}
 			}),
-			css({ output: 'bundle.css' }),
+			resolve({
+				browser: true,
+				dedupe: ['svelte']
+			}),
+			commonjs(),
+			!production && serve(),
+			!production && livereload('dist'),
+			production && terser(),
+		],
+		watch: {
+			clearScreen: false
+		}
+	},
+	{
+		input: 'src/options.js',
+		output: {
+			sourcemap: true,
+			format: 'iife',
+			name: 'timer',
+			file: 'dist/options.js'
+		},
+		plugins: [
+			svelte({
+				compilerOptions: {
+					dev: !production
+				}
+			}),
+			css({ output: 'options.css' }),
 			resolve({
 				browser: true,
 				dedupe: ['svelte']
