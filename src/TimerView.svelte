@@ -46,7 +46,7 @@
 		<div class='time-container'>
 			<Editable isEditing={!isTimeRemaining} >
 				<svelte:fragment slot='edit'>
-					<EditTime bind:hours bind:mins bind:secs />
+					<EditTime bind:hours bind:mins bind:secs handleSubmit={() => start(input)} />
 				</svelte:fragment>
 				<svelte:fragment slot='display'>
 					<DisplayTime {H} {M} {S} />
