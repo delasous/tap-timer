@@ -5,23 +5,20 @@
     import Editable from './Editable.svelte';
     import PencilIcon from '../icons/PencilIcon.svelte';
 
-    let isEditingHotStart1 = false;
-    let isEditingHotStart2 = false;
+    let isEditing = {
+        hotStart1: false,
+        hotStart2: false
+    }
 
     $: hotStart1 = 0;
     $: hotStart2 = 0;
 
     const setHotKey = (keyName, value) => browser.storage.sync.set({ [keyName]: value });
 
-
-    const editHotStart1 = () => {
-        isEditingHotStart1 = !isEditingHotStart1;
-        setHotKey('hotStart1', hotStart1)
-    }
-    const editHotStart2 = () => {
-        isEditingHotStart2  = !isEditingHotStart2;
-        setHotKey('hotStart2', hotStart2)
-
+    const editHotStart = (hotStartName, hotStartValue) => {
+        const state = isEditing[hotStartName];
+        isEditing[hotStartName] = !state;
+        setHotKey(hotStartName, hotStartValue)
     }
 
     onMount(async ()  => {
@@ -41,7 +38,7 @@
         </dt>
         <dd class='row-value' >
             Start: 
-            <Editable isEditing={isEditingHotStart1} >
+            <Editable isEditing={isEditing.hotStart1} >
                 <svelte:fragment slot='edit'>
                     <input bind:value={hotStart1} />
                 </svelte:fragment>
@@ -51,7 +48,7 @@
             </Editable>
             mins
         </dd>
-        <PencilIcon handleClick={editHotStart1} />
+        <PencilIcon handleClick={() => editHotStart('hotStart1', hotStart1)} />
     </div>
     <div class='row'>
         <dt class='row-key'>
@@ -61,7 +58,7 @@
         </dt>
         <dd class='row-value' >
             Start: 
-            <Editable isEditing={isEditingHotStart2} >
+            <Editable isEditing={isEditing.hotStart2} >
                 <svelte:fragment slot='edit'>
                     <input bind:value={hotStart2} />
                 </svelte:fragment>
@@ -71,7 +68,7 @@
             </Editable>
             mins
         </dd>
-        <PencilIcon handleClick={editHotStart2} />
+        <PencilIcon handleClick={() => editHotStart('hotStart2', hotStart2)} />
     </div>
     <div class='row'>
         <dt class='row-key'>
@@ -93,6 +90,16 @@
             Reset
         </dd> 
     </div>
+    <div class='row'>
+        <dt class='row-key'>
+            <kbd>
+                Enter
+            </kbd>
+        </dt>
+        <dd class='row-value' >
+            Start (with typed input)
+        </dd> 
+    </div>
 </dl>
 
 <style>
@@ -110,7 +117,7 @@
     }
 
     .row-value {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 100;
         grid-column: span 1 / span 1
     }

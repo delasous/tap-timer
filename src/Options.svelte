@@ -9,19 +9,17 @@
 <div class='container'>
     <div class='nav-container'>
         <nav>
-            <!-- Nav Content -->
             <CogIcon />
         </nav>
     </div>  
     <main>
-        <!-- Main Content -->
         <div>
             <h1>
                 Settings
             </h1>
         </div>
         <div class='settings'>
-            <div>
+            <div class='settings-group'>
                 <SettingsList 
                     heading='Hot Keys'
                 >
@@ -35,11 +33,22 @@
                     <DisplaySettings slot='settings' />
                 </SettingsList>
             </div>
-            <!-- <div class='settings-heading'>
-                <h2>
-                    End Game
-                </h2>
-            </div> -->
+            <div class='settings-group'>
+                <SettingsList 
+                    heading='End Game'
+                >
+                    <div slot='settings'>
+                        <p>
+                            TAP currently does one thing when your timer ends: 
+                            <span>It silently minimises all of your active browser windows.</span>
+                            <br>
+                            <br>
+                            Thats it for now. In future, you will be able to select different strategies here.
+                        </p>
+                    </div>
+                </SettingsList>
+            </div>
+
         </div>
     </main>
 </div>
@@ -95,6 +104,15 @@
     }
 
     .settings-group {
-        margin-top: 2rem;
+        margin-top: 3rem;
+    }
+
+    p {
+        font-size: 1rem;
+        font-weight: 100;
+    }
+
+    span {
+        text-decoration: underline;
     }
 </style>

@@ -2,16 +2,16 @@
     import browser from 'webextension-polyfill';
     import { onMount } from 'svelte';
 
-    $: isDisplayButtons = true;
+    $: _isDisplayButtons = null;
 
     const setHotKey = (keyName, value) => browser.storage.sync.set({ [keyName]: value });
 
-    const handleEdit = () => setHotKey('isDisplayButtons', isDisplayButtons);
+    const handleEdit = () => setHotKey('isDisplayButtons', _isDisplayButtons);
 
     onMount(async ()  => {
-        const keys = await browser.storage.sync.get('isDisplayButtons')
+		const { isDisplayButtons } = await browser.storage.sync.get('isDisplayButtons');
         
-        isDisplayButtons = (keys.isDisplayButtons === undefined) ? true : isDisplayButtons;
+		_isDisplayButtons = (isDisplayButtons === undefined) ? true : isDisplayButtons;
     })
 </script>
 
@@ -23,7 +23,7 @@
         class='row-value'
         type='checkbox' 
         name='isDisplayButtons' 
-        bind:checked={isDisplayButtons} 
+        bind:checked={_isDisplayButtons} 
         on:change={handleEdit}
     />
 </div>
@@ -44,7 +44,7 @@
     }
 
     .row-value {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 100;
         grid-column: span 1 / span 1
     }

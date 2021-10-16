@@ -42,13 +42,13 @@
 		T.endStrategy = endStrats[0]; 
 
 		// TODO: listen for onChange instead?
-		// TODO: if time value isnt set?
+		// TODO: warning if hotStart value isnt set?
 		if (cmd === 'hot-start-1') {
-			const { hotStart1 } = await browser.storage.sync.get('hotStart1')
+			const { hotStart1 = 0 } = await browser.storage.sync.get('hotStart1')
 			T.start(hotStart1 * 60);
 		}
 		if (cmd === 'hot-start-2') {
-			const { hotStart2 } = await browser.storage.sync.get('hotStart2')
+			const { hotStart2 = 0 } = await browser.storage.sync.get('hotStart2')
 			T.start(hotStart2 * 60);
 		}
 		if (cmd === 'hot-pause') T.pause();
