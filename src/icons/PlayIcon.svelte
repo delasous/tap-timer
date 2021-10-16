@@ -1,12 +1,14 @@
 <script>
     export let disabled;
+    export let focussed;
 
-    $: color = disabled ? "#E3DCD2" : "#313638";
+    $: color = disabled ? "#ece1dd" : "#313638";
 </script>
 
 <div class="icon">
     <svg
         class:magic="{ !disabled }"
+        class:focus="{ focussed }"
         width="70" 
         height="70" 
         viewBox="0 0 24 24" 
@@ -14,7 +16,7 @@
         xmlns="http://www.w3.org/2000/svg"
     >
         <path 
-            stroke={color} fill={color} stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+            stroke={color} fill="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
             d="M14.7519 11.1679L11.5547 9.03647C10.8901 8.59343 10 9.06982 10 9.86852V14.1315C10 14.9302 10.8901 15.4066 11.5547 14.9635L14.7519 12.8321C15.3457 12.4362 15.3457 11.5638 14.7519 11.1679Z" 
         />
         <path 
@@ -35,7 +37,7 @@
         display: inline-block;
 	}
 
-	.magic:hover {
+	.magic:hover, .focus {
         border-radius: 999px;
         border: 3px solid #FFBEB0;
 	}

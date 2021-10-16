@@ -1,12 +1,14 @@
 <script>
     export let disabled;
+    export let focussed;
 
-    $: color = disabled ? "#E3DCD2" : "#313638";
+    $: color = disabled ? "#ece1dd" : "#313638";
 </script>
 
 <div class="icon">
     <svg
         class:magic="{ !disabled }"
+        class:focus="{ focussed }"
         width="70" 
         height="70" 
         viewBox="0 0 24 24" 
@@ -31,7 +33,7 @@
         display: inline-block;
 	}
 
-	.magic:hover {
+	.magic:hover, .focus {
         border-radius: 999px;
         border: 3px solid #FFBEB0;
 	}

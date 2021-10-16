@@ -47,7 +47,11 @@
 	
 	input:focus{
    		outline: none;
-		border-bottom: 3px #FFBEB0 solid
+		color: #FFBEB0;
+	}
+
+	input:focus::placeholder {
+		color: #FFBEB0;
 	}
 </style>
 

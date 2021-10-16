@@ -1,5 +1,5 @@
 <script>
-    import Label from '../src/Label.svelte';
+    import Label from './Label.svelte';
 
     export let H, M, S;
 </script>

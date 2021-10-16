@@ -11,6 +11,8 @@
 	let _isTimeRemaining;
 	let port;
 
+	let _isDisplayButtons;
+
 	let start = (input) => port.postMessage({ msg: 'fire-start', input });
 	let pause = () => port.postMessage({ msg: 'fire-pause' });
 	let reset = () => port.postMessage({ msg: 'fire-reset' });
@@ -28,6 +30,9 @@
 	onMount(async() => {
 		port = browser.runtime.connect({ name: 'background-port' });
 		port.onMessage.addListener(connectToBackgroundPort)
+
+		const { isDisplayButtons } = await browser.storage.sync.get('isDisplayButtons');
+		_isDisplayButtons = (isDisplayButtons === undefined) ? true : isDisplayButtons;
 	})
 
 	onDestroy(async() => port.onMessage.removeListener(connectToBackgroundPort))
@@ -38,6 +43,7 @@
 	interval={_interval}
 	isTimerActive={_isTimerActive}
 	isTimeRemaining={_isTimeRemaining}
+	isDisplayButtons={_isDisplayButtons}
 	{_input}
 	{start}
 	{pause}

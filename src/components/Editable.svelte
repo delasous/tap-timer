@@ -4,7 +4,7 @@
     const setEditing = () => isEditing = !isEditing;
 </script>
 
-{#if !isEditing}
+{#if isEditing}
     <slot name='edit' {setEditing} />
 {:else}
     <slot name='display' {setEditing} />

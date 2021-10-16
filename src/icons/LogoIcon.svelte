@@ -3,7 +3,11 @@
     $: color = "#FFBEB0";
 </script>
 
-<div class="icon" on:click={handleClick}>
+<div class="icon" 
+    on:click={handleClick} 
+    on:mouseover={(e) => color = "#313638"}
+    on:mouseout={(e) => color = "#FFBEB0"}
+>
     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0)">
             <path d="M8.5896 20.3701H7.20013H5.81066L5.81066 12.758L7.20012 11.2422L8.5896 12.758L8.5896 20.3701Z" fill={color} />
@@ -40,5 +44,5 @@
     .icon {
 		position: relative;
         display: inline-block;
-	}
+	}    
 </style>

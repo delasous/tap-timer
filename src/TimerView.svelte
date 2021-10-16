@@ -1,10 +1,11 @@
 <script>
 	import browser from 'webextension-polyfill';
 
-	import Editable from './Editable.svelte';
-	import EditTime from './EditTime.svelte';
-	import DisplayTime from './DisplayTime.svelte';
-	import Button from './Button.svelte';
+	import Editable from './components/Editable.svelte';
+	import EditTime from './components/EditTime.svelte';
+	import DisplayTime from './components/DisplayTime.svelte';
+	import Button from './components/Button.svelte';
+	
 	import Play from './icons/PlayIcon.svelte';
 	import Pause from './icons/PauseIcon.svelte';
 	import Stop from './icons/StopIcon.svelte';
@@ -15,6 +16,8 @@
 	export let isTimerActive;
 	export let isTimeRemaining;
 	export let _input;
+
+	export let isDisplayButtons = true;
 
 	export let start;  
 	export let pause;
@@ -41,7 +44,7 @@
 <div class='app'>
 	<div class='body'>
 		<div class='time-container'>
-			<Editable isEditing={isTimeRemaining} >
+			<Editable isEditing={!isTimeRemaining} >
 				<svelte:fragment slot='edit'>
 					<EditTime bind:hours bind:mins bind:secs />
 				</svelte:fragment>
@@ -51,22 +54,24 @@
 			</Editable>
 		</div>
 
-		<div class='button-container'>
+		<div class={isDisplayButtons ? 'button-container-show' : 'button-container-hide'}>
 				{#if isTimerActive}
 					<Button 
 						class='button-bottom' 
 						disabled={!isTimerActive}
 						handleClick={() => pause()} 
+						let:focussed={focussed}
 					>
-						<Pause disabled={!isTimerActive} />
+						<Pause disabled={!isTimerActive} focussed={focussed} />
 					</Button>
 				{:else}
 					<Button 
 						class='button-top'
 						disabled={input == 0 || interval}
 						handleClick={() => start(input)} 
+						let:focussed={focussed}
 					>
-						<Play disabled={input == 0 || interval} />
+						<Play disabled={input == 0 || interval} focussed={focussed}/>
 					</Button>
 				{/if}
 					<Button 
@@ -76,8 +81,9 @@
 							H = M = S = 0;
 							reset()
 						}} 
+						let:focussed={focussed}
 					>
-						<Stop disabled={interval || !isTimeRemaining} />
+						<Stop disabled={interval || !isTimeRemaining} focussed={focussed}/>
 					</Button>
 		</div>	
 	</div>
@@ -156,12 +162,16 @@
 		justify-content: start;
 	}
 
-	.button-container {
+	.button-container-show {
 		height: 100%;
 		width: 100%;
 		margin-top: 0.5rem;
 		display: flex;
 		flex-direction: row;
 		justify-content: left;
+	}
+
+	.button-container-hide {
+		display: none
 	}
 </style>
