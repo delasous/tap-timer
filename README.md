@@ -1,2 +1,2 @@
 # tap timer
-A tiny timer that lives in the browser.
+A tiny timer that lives in your browser.

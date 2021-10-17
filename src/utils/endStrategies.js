@@ -3,15 +3,19 @@ import toggleIcon from './toggleIcon';
 
 const strategies = [{
     display: 'Force Minimise Window',
-    name: 'minimizeWindows',
-    config: {},
+    id: 'minimizeWindows',
+    description: 'Silently minimise active browser windows.',
+    config: {
+        target: 'all', // | current
+        timeout: 0
+    },
 
     // TODO pass entire state
     run: async function(interval) { 
-        let windows = await browser.windows.getAll()
+        const windows = await browser.windows.getAll();
 
-        let minimizeWindows = windows.map((w) => {
-            browser.windows.update(w.id, { state: 'minimized'})
+        const minimizeWindows = windows.map((w) => {
+            browser.windows.update(w.id, { state: 'minimized' })
         })
 
         toggleIcon(interval)
