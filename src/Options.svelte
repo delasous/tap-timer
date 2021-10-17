@@ -57,6 +57,7 @@
     :global(*) {
         box-sizing: border-box;
     }
+    
     :global(body) {
         height: 100vh;
         width: 100vw;

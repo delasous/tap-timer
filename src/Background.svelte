@@ -8,6 +8,9 @@
 
 	let port;
 	let T;
+
+	let hotStart1 = 0;
+	let hotStart2 = 0;
 	
 	function connectToAppPort (p) {
 		port = p;
@@ -37,29 +40,29 @@
 		port.onDisconnect.addListener(removeActions)
 	}
 
-	async function hotKeys(cmd) {
+	function hotKeys(cmd) {
 		T = Timer.getInstance();
 		T.endStrategy = endStrats[0]; 
 
-		// TODO: listen for onChange instead?
 		// TODO: warning if hotStart value isnt set?
-		if (cmd === 'hot-start-1') {
-			const { hotStart1 = 0 } = await browser.storage.sync.get('hotStart1')
-			T.start(hotStart1 * 60);
-		}
-		if (cmd === 'hot-start-2') {
-			const { hotStart2 = 0 } = await browser.storage.sync.get('hotStart2')
-			T.start(hotStart2 * 60);
-		}
+		if (cmd === 'hot-start-1') T.start(hotStart1 * 60);
+		if (cmd === 'hot-start-2') T.start(hotStart2 * 60);
 		if (cmd === 'hot-pause') T.pause();
 		if (cmd === 'hot-reset') T.reset();
 		
 		toggleIcon(T.interval)
 	}
 
+	function handleStorageChange(changes, area) {
+		hotStart1 = changes.hotStart1.newValue;
+		hotStart2 = changes.hotStart2.newvalue;
+	}
+
 	browser.runtime.onConnect.addListener(connectToAppPort);
 	browser.commands.onCommand.addListener(hotKeys)
+	browser.storage.onChanged.addListener(handleStorageChange);
 
 	browser.runtime.onSuspend.removeListener(connectToAppPort);
 	browser.runtime.onSuspend.removeListener(hotKeys);
+	browser.runtime.onSuspend.removeListener(handleStorageChange);
 </script>
