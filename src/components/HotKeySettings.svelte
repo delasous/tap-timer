@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
 
     import Editable from './Editable.svelte';
+    import Button from './Button.svelte';
     import PencilIcon from '../icons/PencilIcon.svelte';
 
     let isEditing = {
@@ -15,10 +16,11 @@
 
     const setHotKey = (keyName, value) => browser.storage.sync.set({ [keyName]: value });
 
-    const editHotStart = (hotStartName, hotStartValue) => {
-        const state = isEditing[hotStartName];
-        isEditing[hotStartName] = !state;
-        setHotKey(hotStartName, hotStartValue)
+    const toggleEdit = (setting) => isEditing[setting] = !isEditing[setting]
+
+    const saveEditedInput = (inputName, inputValue) => {
+        if(isEditing[inputName]) setHotKey(inputName, inputValue)
+        toggleEdit(inputName);
     }
 
     onMount(async ()  => {
@@ -40,7 +42,11 @@
             Start: 
             <Editable isEditing={isEditing.hotStart1} >
                 <svelte:fragment slot='edit'>
-                    <input bind:value={hotStart1} />
+                    <input 
+                        min="0"
+                        max="1439"
+                        bind:value={hotStart1}
+                    />
                 </svelte:fragment>
                 <svelte:fragment slot='display'>
                     <p>{hotStart1 ?? '-'}</p>
@@ -48,7 +54,14 @@
             </Editable>
             mins
         </dd>
-        <PencilIcon handleClick={() => editHotStart('hotStart1', hotStart1)} />
+        <Button
+            handleClick={() => saveEditedInput('hotStart1', hotStart1)} 
+            let:focussed={focussed}
+        >
+            <PencilIcon 
+                focussed={focussed}
+            />
+        </Button>
     </div>
     <div class='row'>
         <dt class='row-key'>
@@ -60,7 +73,11 @@
             Start: 
             <Editable isEditing={isEditing.hotStart2} >
                 <svelte:fragment slot='edit'>
-                    <input bind:value={hotStart2} />
+                    <input 
+                        min="0"
+                        max="1439"
+                        bind:value={hotStart2}
+                    />
                 </svelte:fragment>
                 <svelte:fragment slot='display'>
                     <p>{hotStart2 ?? '-'}</p>
@@ -68,7 +85,14 @@
             </Editable>
             mins
         </dd>
-        <PencilIcon handleClick={() => editHotStart('hotStart2', hotStart2)} />
+        <Button
+            handleClick={() => saveEditedInput('hotStart2', hotStart2)} 
+            let:focussed={focussed}
+        >
+            <PencilIcon 
+                focussed={focussed}
+            />
+        </Button>
     </div>
     <div class='row'>
         <dt class='row-key'>

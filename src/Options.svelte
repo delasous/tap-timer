@@ -19,13 +19,11 @@
             </h1>
         </div>
         <div class='settings'>
-            <div class='settings-group'>
                 <SettingsList 
                     heading='Hot Keys'
                 >
                     <HotKeySettings slot='settings' />
                 </SettingsList>
-            </div>
             <div class='settings-group'>
                 <SettingsList 
                     heading='Display'
@@ -58,21 +56,25 @@
         box-sizing: border-box;
     }
     
-    :global(body) {
-        height: 100vh;
-        width: 100vw;
+    :global(html, body) {
+        padding: 0;
         margin: 0;
+    }
+
+    :global(body) {
+        height: 100%;
+        width: 100vw;
     }
 
     .container {
         display: flex;
+        align-items: stretch;
         height: 100%;
         width: 100%;
     }
 
     .nav-container {
         width: 6rem;
-        height: 100%;
         background-color: #FFBEB0
     }
 
@@ -87,8 +89,9 @@
     }
 
     main {
-        margin-left: 2rem;
+        margin: 0 0 5rem 2rem;
         width: 75%;
+        height: 100%;
         display: flex;
         flex-direction: column;
     }

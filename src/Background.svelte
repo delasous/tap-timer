@@ -9,8 +9,10 @@
 	let port;
 	let T;
 
-	let hotStart1 = 0;
-	let hotStart2 = 0;
+	let settings = {
+		hotStart1: 0,
+		hotStart2: 0
+	}
 	
 	function connectToAppPort (p) {
 		port = p;
@@ -45,8 +47,8 @@
 		T.endStrategy = endStrats[0]; 
 
 		// TODO: warning if hotStart value isnt set?
-		if (cmd === 'hot-start-1') T.start(hotStart1 * 60);
-		if (cmd === 'hot-start-2') T.start(hotStart2 * 60);
+		if (cmd === 'hot-start-1' && settings.hotStart1 ) T.start(settings.hotStart1 * 60);
+		if (cmd === 'hot-start-2' && settings.hotStart2 ) T.start(settings.hotStart2 * 60);
 		if (cmd === 'hot-pause') T.pause();
 		if (cmd === 'hot-reset') T.reset();
 		
@@ -54,8 +56,13 @@
 	}
 
 	function handleStorageChange(changes, area) {
-		hotStart1 = changes.hotStart1.newValue;
-		hotStart2 = changes.hotStart2.newvalue;
+		if(changes.hotStart1) {
+			settings.hotStart1 = changes.hotStart1.newValue;
+		} else if (changes.hotStart2) {
+			settings.hotStart2 = changes.hotStart2.newValue;
+		} else {
+			return;
+		}
 	}
 
 	browser.runtime.onConnect.addListener(connectToAppPort);

@@ -1,10 +1,20 @@
 <script>
-    export let handleClick;
-    $: color = "#313638";
+    export let disabled;
+    export let focussed;
+
+    $: color = disabled ? "#ece1dd" : "#313638";
 </script>
 
-<div class="icon" on:click={handleClick}>
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="icon" >
+    <svg 
+        class:magic="{ !disabled }"
+        class:focus="{ focussed }"
+        width="20" 
+        height="20" 
+        viewBox="0 0 20 20" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+    >
         <path 
             fill={color}
             d="M17.4142 2.58579C16.6332 1.80474 15.3668 1.80474 14.5858 2.58579L7 10.1716V13H9.82842L17.4142 5.41421C18.1953 4.63316 18.1953 3.36683 17.4142 2.58579Z" 
@@ -19,8 +29,12 @@
 </div>
 
 <style>
-       .icon {
+    .icon {
 		position: relative;
         display: inline-block;
+	}
+
+	.magic:hover, .focus {
+        border: 3px solid #FFBEB0;
 	}
 </style>
