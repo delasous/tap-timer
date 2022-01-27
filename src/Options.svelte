@@ -62,14 +62,14 @@
     }
 
     :global(body) {
-        height: 100%;
+        height: 100vh;
         width: 100vw;
     }
 
     .container {
         display: flex;
         align-items: stretch;
-        height: 100%;
+        min-height: 100%;
         width: 100%;
     }
 
@@ -80,7 +80,6 @@
 
     nav {
         margin-top: 1rem;
-        height: 100%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -91,7 +90,6 @@
     main {
         margin: 0 0 5rem 2rem;
         width: 75%;
-        height: 100%;
         display: flex;
         flex-direction: column;
     }
@@ -104,7 +102,6 @@
     .settings {
         display: flex;
         flex-direction: column;
-        height: 75%;
     }
 
     .settings-group {
