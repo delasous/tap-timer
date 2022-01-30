@@ -1,27 +1,13 @@
-class Timer {
+import EventEmitter from 'events'
+
+class Timer extends EventEmitter {
 	countDown;
 	input;
 	interval;
 	isTimerActive = false; 
 	isTimeRemaining = false;
 
-	messanger;
-	endStrategy = {
-		display: 'Default',
-		name: 'default',
-		config: {},
-		run: async () => console.log('Timer has ended.')
-	};
-
-	set messanger(messanger) {
-		this.messanger = messanger
-	}
-
-	set endStategy(endStrategy) {
-		this.endStategy = endStrategy
-	}
-
-	notifyState() {
+	emitState() {
 		// recreates state every pass 
 		let countDown = this.countDown;
 		let	interval = this.interval;
@@ -29,7 +15,7 @@ class Timer {
 		let isTimeRemaining = this.isTimeRemaining;
 		let input = this.input;
 	
-		if (this.messanger) this.messanger.postMessage({ msg: 'fire-state', countDown, interval, isTimerActive, isTimeRemaining, input })		
+		this.emit('state', { countDown, interval, isTimerActive, isTimeRemaining, input });		
 	}
 	
 	pause() {
@@ -38,23 +24,30 @@ class Timer {
 		clearInterval(this.interval);
 		this.interval = null;
 		this.isTimerActive = false;
-		this.notifyState() 
+
+		this.emitState();
+		this.emit('pause'); 
 	}
 	
-	// notifies state twice.
 	reset() {
-		this.pause();
+		clearInterval(this.interval);
+		this.interval = null;
+		this.isTimerActive = false;
 		this.countDown = this.input;
 		this.input = null;
 		this.isTimeRemaining = false;
-		this.notifyState()
+
+		this.emitState();
+		this.emit('reset');
 	}
 
-	// run is async!
 	end() {
-		this.reset();
-		// TODO: pass entire Timer state
-		this.endStrategy.run(this.interval) 
+		clearInterval(this.interval);
+		this.interval = null;
+		this.isTimerActive = false;
+		this.input = 0;
+		
+		this.emit('end')
 	}
 	
 	start(input) {
@@ -64,6 +57,8 @@ class Timer {
 		this.countDown = this.isTimeRemaining ? this.countDown : this.input;
 		this.isTimerActive = true;
 		this.isTimeRemaining = true;
+
+		this.emit('start');
 	
 		this.interval = setInterval(() => {
 			if (this.countDown === 0) {
@@ -72,7 +67,7 @@ class Timer {
 			}
 
 			this.countDown -= 1;
-			this.notifyState()
+			this.emitState()
 		}, 1000);
 	};
 }

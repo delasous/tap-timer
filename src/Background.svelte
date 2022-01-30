@@ -19,32 +19,39 @@
 			
 		T = Timer.getInstance();
 
-		T.messanger = port
-		T.endStrategy = endStrats[0]; // hardcoded to draft; set from UI settings page.
+		T.on('state', function(state) {
+			if (port) {
+				port.postMessage({ msg: 'fire-state', ...state });
+			};
+			return;
+		}); 
 
-		T.notifyState();
+		T.on('end', function() {
+			return endStrats[0].run(this.interval); // hardcoded to draft; set from UI settings page.
+		});
+
+		T.emitState();
 
 		const fireActions = ({ msg, input }) => {
 			if (msg === 'fire-start') T.start(input);
 			if (msg === 'fire-pause') T.pause();
 			if (msg === 'fire-reset') T.reset();
 
-			toggleIcon(T.interval)
+			toggleIcon(T.interval);
 		}
 
 		const removeActions = () => {
-			T.messanger = undefined;
-			port.onMessage.removeListener(fireActions)
-			port.onDisconnect.removeListener(removeActions)
+			port.onMessage.removeListener(fireActions);
+			port.onDisconnect.removeListener(removeActions);
+			port = null; 
 		}
 		
-		port.onMessage.addListener(fireActions)
-		port.onDisconnect.addListener(removeActions)
+		port.onMessage.addListener(fireActions);
+		port.onDisconnect.addListener(removeActions);
 	}
 
 	function hotKeys(cmd) {
 		T = Timer.getInstance();
-		T.endStrategy = endStrats[0]; 
 
 		// TODO: warning if hotStart value isnt set?
 		if (cmd === 'hot-start-1' && settings.hotStart1 ) T.start(settings.hotStart1 * 60);
@@ -66,7 +73,7 @@
 	}
 
 	browser.runtime.onConnect.addListener(connectToAppPort);
-	browser.commands.onCommand.addListener(hotKeys)
+	browser.commands.onCommand.addListener(hotKeys);
 	browser.storage.onChanged.addListener(handleStorageChange);
 
 	browser.runtime.onSuspend.removeListener(connectToAppPort);
