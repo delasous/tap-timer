@@ -7,15 +7,18 @@ class Timer extends EventEmitter {
 	isTimerActive = false; 
 	isTimeRemaining = false;
 
+	get state() {
+		return { 
+			countDown: this.countDown, 
+			interval: this.interval, 
+			isTimerActive: this.isTimerActive, 
+			isTimeRemaining: this.isTimeRemaining, 
+			input: this.input
+		};
+	}
+
 	emitState() {
-		// recreates state every pass 
-		let countDown = this.countDown;
-		let	interval = this.interval;
-	    let isTimerActive = this.isTimerActive;
-		let isTimeRemaining = this.isTimeRemaining;
-		let input = this.input;
-	
-		this.emit('state', { countDown, interval, isTimerActive, isTimeRemaining, input });		
+		this.emit('state', this.state);		
 	}
 	
 	pause() {
@@ -26,7 +29,7 @@ class Timer extends EventEmitter {
 		this.isTimerActive = false;
 
 		this.emitState();
-		this.emit('pause'); 
+		this.emit('pause', this.state); 
 	}
 	
 	reset() {
@@ -38,7 +41,7 @@ class Timer extends EventEmitter {
 		this.isTimeRemaining = false;
 
 		this.emitState();
-		this.emit('reset');
+		this.emit('reset', this.state);
 	}
 
 	end() {
@@ -47,7 +50,7 @@ class Timer extends EventEmitter {
 		this.isTimerActive = false;
 		this.input = 0;
 		
-		this.emit('end')
+		this.emit('end', this.state)
 	}
 	
 	start(input) {
@@ -58,7 +61,7 @@ class Timer extends EventEmitter {
 		this.isTimerActive = true;
 		this.isTimeRemaining = true;
 
-		this.emit('start');
+		this.emit('start', this.state);
 	
 		this.interval = setInterval(() => {
 			if (this.countDown === 0) {

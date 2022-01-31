@@ -17,10 +17,9 @@
 			port.postMessage({ msg: 'fire-state', ...state });
 		}
 
-		function handleEnd() {
+		function handleEnd(state) {
 			// TODO: hardcoded to draft; set from UI settings page.
-			// TODO: don't implicitly pass interval
-			return endStrats[0].run(this.interval); 
+			return endStrats[0].run(state.interval); 
 		}
 		
 		function handleActions({ msg, input }) {
