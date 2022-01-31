@@ -1,5 +1,6 @@
 <script>
 	import browser from 'webextension-polyfill';
+	import { onMount } from 'svelte';
 
 	import toggleIcon from './utils/toggleIcon';
 	import endStrats from './utils/endStrategies';
@@ -8,8 +9,16 @@
 	let settings = {
 		hotStart1: 0,
 		hotStart2: 0
+		// TODO: add selected endstrats
 	}
 	
+	onMount(async ()  => {
+        const keys = await browser.storage.sync.get(['hotStart1', 'hotStart2']);
+        
+        settings.hotStart1 = keys.hotStart1;
+        settings.hotStart2 = keys.hotStart2;
+    })
+
 	function handleAppPortConnect(port) {
 		const timer = Timer.getInstance();
 
