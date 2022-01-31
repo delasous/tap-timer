@@ -3,63 +3,60 @@
 
 	import toggleIcon from './utils/toggleIcon';
 	import endStrats from './utils/endStrategies';
-
 	import Timer from './Timer';
-
-	let port;
-	let T;
 
 	let settings = {
 		hotStart1: 0,
 		hotStart2: 0
 	}
 	
-	function connectToAppPort (p) {
-		port = p;
-			
-		T = Timer.getInstance();
+	function handleAppPortConnect(port) {
+		const timer = Timer.getInstance();
 
-		T.on('state', function(state) {
-			if (port) {
-				port.postMessage({ msg: 'fire-state', ...state });
-			};
-			return;
-		}); 
-
-		T.on('end', function() {
-			return endStrats[0].run(this.interval); // hardcoded to draft; set from UI settings page.
-		});
-
-		T.emitState();
-
-		const fireActions = ({ msg, input }) => {
-			if (msg === 'fire-start') T.start(input);
-			if (msg === 'fire-pause') T.pause();
-			if (msg === 'fire-reset') T.reset();
-
-			toggleIcon(T.interval);
+		function handleState(state) {
+			port.postMessage({ msg: 'fire-state', ...state });
 		}
 
-		const removeActions = () => {
-			port.onMessage.removeListener(fireActions);
-			port.onDisconnect.removeListener(removeActions);
-			port = null; 
+		function handleEnd() {
+			// TODO: hardcoded to draft; set from UI settings page.
+			// TODO: don't implicitly pass interval
+			return endStrats[0].run(this.interval); 
 		}
 		
-		port.onMessage.addListener(fireActions);
-		port.onDisconnect.addListener(removeActions);
+		function handleActions({ msg, input }) {
+			if (msg === 'fire-start') timer.start(input);
+			if (msg === 'fire-pause') timer.pause();
+			if (msg === 'fire-reset') timer.reset();
+
+			toggleIcon(timer.interval);
+		}
+
+		timer.on('state', handleState); 
+		timer.on('end', handleEnd);
+		port.onMessage.addListener(handleActions);
+
+		timer.emitState();
+
+		function cleanup() {
+			timer.removeListener('state', handleState);
+			timer.removeListener('end', handleEnd);
+			port.onMessage.removeListener(handleActions);
+			port.onDisconnect.removeListener(cleanup);
+		}
+		
+		port.onDisconnect.addListener(cleanup);
 	}
 
-	function hotKeys(cmd) {
-		T = Timer.getInstance();
+	function handleHotKeys(cmd) {
+		let timer = Timer.getInstance();
 
 		// TODO: warning if hotStart value isnt set?
-		if (cmd === 'hot-start-1' && settings.hotStart1 ) T.start(settings.hotStart1 * 60);
-		if (cmd === 'hot-start-2' && settings.hotStart2 ) T.start(settings.hotStart2 * 60);
-		if (cmd === 'hot-pause') T.pause();
-		if (cmd === 'hot-reset') T.reset();
+		if (cmd === 'hot-start-1' && settings.hotStart1 ) timer.start(settings.hotStart1 * 60);
+		if (cmd === 'hot-start-2' && settings.hotStart2 ) timer.start(settings.hotStart2 * 60);
+		if (cmd === 'hot-pause') timer.pause();
+		if (cmd === 'hot-reset') timer.reset();
 		
-		toggleIcon(T.interval)
+		toggleIcon(timer.interval)
 	}
 
 	function handleStorageChange(changes, area) {
@@ -72,11 +69,16 @@
 		}
 	}
 
-	browser.runtime.onConnect.addListener(connectToAppPort);
-	browser.commands.onCommand.addListener(hotKeys);
+	browser.runtime.onConnect.addListener(handleAppPortConnect);
+	browser.commands.onCommand.addListener(handleHotKeys);
 	browser.storage.onChanged.addListener(handleStorageChange);
 
-	browser.runtime.onSuspend.removeListener(connectToAppPort);
-	browser.runtime.onSuspend.removeListener(hotKeys);
-	browser.runtime.onSuspend.removeListener(handleStorageChange);
+	function cleanup() {
+		browser.runtime.onConnect.removeListener(handleAppPortConnect);
+		browser.commands.onCommand.removeListener(handleHotKeys);
+		browser.storage.onChanged.removeListener(handleStorageChange);
+		browser.runtime.onSuspend.removeListener(cleanup);
+	}
+
+	browser.runtime.onSuspend.addListener(cleanup);
 </script>
