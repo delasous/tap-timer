@@ -54,7 +54,7 @@ class Timer extends EventEmitter {
 	}
 	
 	start(input) {
-		if (this.interval) return;
+		if (this.interval || input == 0 ) return;
 		
 		this.input = input;
 		this.countDown = this.isTimeRemaining ? this.countDown : this.input;
