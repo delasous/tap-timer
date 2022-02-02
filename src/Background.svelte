@@ -22,6 +22,8 @@
 	function handleAppPortConnect(port) {
 		const timer = Timer.getInstance();
 
+		port.postMessage({ msg: 'fire-state', ...timer.state })
+
 		function handleState(state) {
 			port.postMessage({ msg: 'fire-state', ...state });
 		}
@@ -41,9 +43,8 @@
 
 		timer.on('state', handleState); 
 		timer.on('end', handleEnd);
-		port.onMessage.addListener(handleActions);
 
-		timer.emitState();
+		port.onMessage.addListener(handleActions);
 
 		function cleanup() {
 			timer.removeListener('state', handleState);
