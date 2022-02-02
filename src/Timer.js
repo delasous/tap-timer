@@ -1,19 +1,25 @@
-import EventEmitter from 'events'
+import EventEmitter from 'events';
 
 class Timer extends EventEmitter {
-	countDown;
-	input;
-	interval;
-	isTimerActive = false; 
-	isTimeRemaining = false;
+	#countDown;
+	#input;
+	#interval;
+	#isTimerActive;
+	#isTimeRemaining;
+
+	constructor() {
+		super();
+		this.#isTimerActive = false;
+		this.#isTimeRemaining = false;
+	}
 
 	get state() {
 		return { 
-			countDown: this.countDown, 
-			interval: this.interval, 
-			isTimerActive: this.isTimerActive, 
-			isTimeRemaining: this.isTimeRemaining, 
-			input: this.input
+			countDown: this.#countDown, 
+			input: this.#input,
+			interval: this.#interval, 
+			isTimerActive: this.#isTimerActive, 
+			isTimeRemaining: this.#isTimeRemaining, 
 		};
 	}
 
@@ -22,54 +28,54 @@ class Timer extends EventEmitter {
 	}
 	
 	pause() {
-		if(!this.interval) return;
+		if(!this.#interval) return;
 
-		clearInterval(this.interval);
-		this.interval = null;
-		this.isTimerActive = false;
+		clearInterval(this.#interval);
+		this.#interval = null;
+		this.#isTimerActive = false;
 
 		this.emitState();
 		this.emit('pause', this.state); 
 	}
 	
 	reset() {
-		clearInterval(this.interval);
-		this.interval = null;
-		this.isTimerActive = false;
-		this.countDown = this.input;
-		this.input = null;
-		this.isTimeRemaining = false;
+		clearInterval(this.#interval);
+		this.#interval = null;
+		this.#isTimerActive = false;
+		this.#countDown = this.#input;
+		this.#input = null;
+		this.#isTimeRemaining = false;
 
 		this.emitState();
 		this.emit('reset', this.state);
 	}
 
 	end() {
-		clearInterval(this.interval);
-		this.interval = null;
-		this.isTimerActive = false;
-		this.input = 0;
+		clearInterval(this.#interval);
+		this.#interval = null;
+		this.#isTimerActive = false;
+		this.#input = 0;
 		
 		this.emit('end', this.state)
 	}
 	
 	start(input) {
-		if (this.interval || input == 0 ) return;
+		if (this.#interval || input == 0 ) return;
 		
-		this.input = input;
-		this.countDown = this.isTimeRemaining ? this.countDown : this.input;
-		this.isTimerActive = true;
-		this.isTimeRemaining = true;
+		this.#input = input;
+		this.#countDown = this.#isTimeRemaining ? this.#countDown : input;
+
+		this.#isTimerActive = true;
+		this.#isTimeRemaining = true;
 
 		this.emit('start', this.state);
 	
-		this.interval = setInterval(() => {
-			if (this.countDown === 0) {
+		this.#interval = setInterval(() => {
+			if (this.#countDown === 0) {
 				this.end(); 
 				return;
 			}
-
-			this.countDown -= 1;
+			this.#countDown -= 1;
 			this.emitState()
 		}, 1000);
 	};
