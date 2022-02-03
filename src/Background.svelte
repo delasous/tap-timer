@@ -4,7 +4,7 @@
 
 	import toggleIcon from './utils/toggleIcon';
 	import endStrats from './utils/endStrategies';
-	import Timer from './Timer';
+	import Timer from './TimerCore';
 
 	let settings = {
 		hotStart1: 0,
