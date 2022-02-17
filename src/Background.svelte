@@ -6,6 +6,8 @@
 	import endStrats from './utils/endStrategies';
 	import Timer from './TimerCore';
 
+	let timer = new Timer();
+
 	let settings = {
 		hotStart1: 0,
 		hotStart2: 0
@@ -20,8 +22,6 @@
     })
 
 	function handleAppPortConnect(port) {
-		const timer = Timer.getInstance();
-
 		port.postMessage({ msg: 'fire-state', ...timer.state })
 
 		function handleState(state) {

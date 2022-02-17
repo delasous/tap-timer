@@ -60,7 +60,7 @@ class Timer extends EventEmitter {
 	}
 	
 	start(input) {
-		if (this.#interval || input == 0 ) return;
+		if (this.#interval || !input || input == 0) return;
 		
 		this.#input = input;
 		this.#countDown = this.#isTimeRemaining ? this.#countDown : input;
@@ -81,15 +81,4 @@ class Timer extends EventEmitter {
 	};
 }
 
-const TimerSingleton = (() => {
-	let instance;
-
-	return {
-		getInstance: () => {
-			if (!instance) instance = new Timer();
-			return instance;
-		}
-	};
-})();
-
-export default TimerSingleton;
+export default Timer;
