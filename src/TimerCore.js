@@ -23,10 +23,6 @@ class Timer extends EventEmitter {
 		};
 	}
 
-	#emitState() {
-		this.emit('state', this.state);		
-	}
-	
 	pause() {
 		if(!this.#interval) return;
 
@@ -34,8 +30,7 @@ class Timer extends EventEmitter {
 		this.#interval = null;
 		this.#isTimerActive = false;
 
-		this.emit('pause'); 
-		this.#emitState();
+		this.emit('pause', this.state); 
 	}
 	
 	reset() {
@@ -46,8 +41,7 @@ class Timer extends EventEmitter {
 		this.#input = null;
 		this.#isTimeRemaining = false;
 
-		this.emit('reset');
-		this.#emitState();
+		this.emit('reset', this.state);
 	}
 
 	end() {
@@ -76,7 +70,7 @@ class Timer extends EventEmitter {
 				return;
 			}
 			this.#countDown -= 1;
-			this.#emitState()
+			this.emit('count', this.state)
 		}, 1000);
 	};
 }

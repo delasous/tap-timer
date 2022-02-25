@@ -104,7 +104,7 @@ timer(
 );
 
 timer(
-  "Pause clears the interval if the timer is active",
+  "Pause clears the interval if the timer is active, and sets isTimerActive to false",
   ({ timer, setIntervalSpy, clearIntervalSpy }) => {
     timer.start(1);
 
@@ -113,6 +113,7 @@ timer(
     timer.pause();
 
     assert.is(clearIntervalSpy.calledOnce, true);
+    assert.is(timer.state.isTimerActive, false);
   }
 );
 
@@ -154,6 +155,66 @@ timer(
   }
 );
 
-// TODO: add tests for events emitted
+timer("Start emits a 'start' event with state arg", ({ timer }) => {
+  const spy = sinon.spy();
+  timer.on("start", spy);
+
+  timer.start(1);
+
+  assert.is(spy.calledOnce, true);
+  assert.is(spy.args.length, 1);
+
+  timer.removeListener("start", spy);
+});
+
+timer("Pause emits a 'pause' event with state arg", ({ timer }) => {
+  const spy = sinon.spy();
+  timer.on("pause", spy);
+
+  timer.start(1);
+  timer.pause();
+
+  assert.is(spy.calledOnce, true);
+  assert.is(spy.args.length, 1);
+
+  timer.removeListener("pause", spy);
+});
+
+timer("Reset emits a 'reset' event with state arg", ({ timer }) => {
+  const spy = sinon.spy();
+  timer.on("reset", spy);
+
+  timer.start(1);
+  timer.reset();
+
+  assert.is(spy.calledOnce, true);
+  assert.is(spy.args.length, 1);
+
+  timer.removeListener("reset", spy);
+});
+
+timer("End emits an 'end' event with state arg", ({ timer }) => {
+  const spy = sinon.spy();
+  timer.on("end", spy);
+
+  timer.end();
+
+  assert.is(spy.calledOnce, true);
+  assert.is(spy.args.length, 1);
+
+  timer.removeListener("end", spy);
+});
+
+timer("Emits 'count' event on tick with state arg", ({ timer, clock }) => {
+  const spy = sinon.spy();
+  timer.on("count", spy);
+
+  timer.start(10);
+  clock.tick(1000);
+
+  assert.is(spy.calledOnce, true);
+
+  timer.removeListener("state", spy);
+});
 
 timer.run();

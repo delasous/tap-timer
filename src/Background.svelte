@@ -41,13 +41,19 @@
 			toggleIcon(timer.interval);
 		}
 
-		timer.on('state', handleState); 
+		timer.on('count', handleState); 
+		timer.on('start', handleState); 
+		timer.on('pause', handleState); 
+		timer.on('reset', handleState); 
 		timer.on('end', handleEnd);
 
 		port.onMessage.addListener(handleActions);
 
 		function cleanup() {
-			timer.removeListener('state', handleState);
+			timer.removeListener('count', handleState);
+			timer.removeListener('start', handleState);
+			timer.removeListener('pause', handleState);
+			timer.removeListener('reset', handleState);
 			timer.removeListener('end', handleEnd);
 			port.onMessage.removeListener(handleActions);
 			port.onDisconnect.removeListener(cleanup);
@@ -57,8 +63,6 @@
 	}
 
 	function handleHotKeys(cmd) {
-		let timer = Timer.getInstance();
-
 		// TODO: warning if hotStart value isnt set?
 		if (cmd === 'hot-start-1' && settings.hotStart1 ) timer.start(settings.hotStart1 * 60);
 		if (cmd === 'hot-start-2' && settings.hotStart2 ) timer.start(settings.hotStart2 * 60);
