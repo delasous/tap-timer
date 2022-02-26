@@ -50,7 +50,8 @@ class Timer extends EventEmitter {
 		this.#isTimerActive = false;
 		this.#input = 0;
 		
-		this.emit('end', this.state)
+		this.emit('end', this.state);
+		this.reset();
 	}
 	
 	start(input) {
