@@ -41,6 +41,7 @@ export default [{
 					'manifest.json',
 					'icon-active-32.png',
 					'icon-inactive-32.png',
+					'double-bell-alarm.wav'
 				]
 			})
 		],
