@@ -10,28 +10,28 @@
 
 	let settings = {
 		hotStart1: 0,
-		hotStart2: 0
-		// TODO: add selected endstrats
+		hotStart2: 0,
+		endStratsConfig: []
 	}
 	
 	onMount(async ()  => {
-        const keys = await browser.storage.sync.get(['hotStart1', 'hotStart2']);
+        const keys = await browser.storage.sync.get(['hotStart1', 'hotStart2', 'endStratsConfig']);
         
         settings.hotStart1 = keys.hotStart1;
         settings.hotStart2 = keys.hotStart2;
+
+		if(keys.endStratsConfig) {
+			settings.endStratsConfig = keys.endStratsConfig;
+		} else {
+			const defaultEndStratConfig = endStrats.map(({ id, description, display }) => ({ id, description, display, isActive: true }));
+
+			settings.endStratsConfig = defaultEndStratConfig;
+			browser.storage.sync.set({ ["endStratsConfig"]: settings.endStratsConfig });
+		}
     })
 
 	function handleAppPortConnect(port) {
 		port.postMessage({ msg: 'fire-state', ...timer.state })
-
-		function handleState(state) {
-			port.postMessage({ msg: 'fire-state', ...state });
-		}
-
-		function handleEnd(state) {
-			// TODO: hardcoded to draft; set from UI settings page.
-			return endStrats[0].run(state.interval); 
-		}
 		
 		function handleActions({ msg, input }) {
 			if (msg === 'fire-start') timer.start(input);
@@ -41,11 +41,14 @@
 			toggleIcon(timer.interval);
 		}
 
+		function handleState(state) {
+			port.postMessage({ msg: 'fire-state', ...state });
+		}
+
 		timer.on('count', handleState); 
 		timer.on('start', handleState); 
 		timer.on('pause', handleState); 
 		timer.on('reset', handleState); 
-		timer.on('end', handleEnd);
 
 		port.onMessage.addListener(handleActions);
 
@@ -54,7 +57,6 @@
 			timer.removeListener('start', handleState);
 			timer.removeListener('pause', handleState);
 			timer.removeListener('reset', handleState);
-			timer.removeListener('end', handleEnd);
 			port.onMessage.removeListener(handleActions);
 			port.onDisconnect.removeListener(cleanup);
 		}
@@ -77,16 +79,31 @@
 			settings.hotStart1 = changes.hotStart1.newValue;
 		} else if (changes.hotStart2) {
 			settings.hotStart2 = changes.hotStart2.newValue;
+		} else if (changes.endStratsConfig) {
+			settings.endStratsConfig = changes.endStratsConfig.newValue;
 		} else {
 			return;
 		}
 	}
+
+	function handleTimerEnd(state) {
+		return endStrats.forEach((strat, ix) => {
+			if(settings.endStratsConfig[ix].isActive) {
+				strat.run(state.interval);
+			} else {
+				return;
+			}
+		}); 
+	}
+
+	timer.on('end', handleTimerEnd)
 
 	browser.runtime.onConnect.addListener(handleAppPortConnect);
 	browser.commands.onCommand.addListener(handleHotKeys);
 	browser.storage.onChanged.addListener(handleStorageChange);
 
 	function cleanup() {
+		timer.removeListener('end', handleTimerEnd)
 		browser.runtime.onConnect.removeListener(handleAppPortConnect);
 		browser.commands.onCommand.removeListener(handleHotKeys);
 		browser.storage.onChanged.removeListener(handleStorageChange);

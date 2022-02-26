@@ -2,6 +2,7 @@
     import SettingsList from './components/SettingsList.svelte';
     import HotKeySettings from './components/HotKeySettings.svelte';
     import DisplaySettings from './components/DisplaySettings.svelte';
+    import EndStratSettings from './components/EndStratSettings.svelte';
     
     import CogIcon from './icons/CogIcon.svelte';
 </script>
@@ -35,15 +36,7 @@
                 <SettingsList 
                     heading='End Game'
                 >
-                    <div slot='settings'>
-                        <p>
-                            TAP currently does one thing when your timer ends: 
-                            <span>It silently minimises all of your active browser windows.</span>
-                            <br>
-                            <br>
-                            Thats it for now. In future, you will be able to select different strategies here.
-                        </p>
-                    </div>
+                    <EndStratSettings slot='settings' />
                 </SettingsList>
             </div>
 
@@ -106,14 +99,5 @@
 
     .settings-group {
         margin-top: 3rem;
-    }
-
-    p {
-        font-size: 1rem;
-        font-weight: 100;
-    }
-
-    span {
-        text-decoration: underline;
     }
 </style>

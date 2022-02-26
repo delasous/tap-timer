@@ -34,7 +34,8 @@
         width: 90%;
         display: grid;
         align-items: center;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-row-gap: 1.5em;
     }
 
     .row-key {
